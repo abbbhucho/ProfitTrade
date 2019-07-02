@@ -195,8 +195,7 @@
     </form> -->--}}
     <!-- ----------------------------Delete---------------------------------- -->
     <div class="modal fade" id="deleteModal{{$view->id}}" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
-     <form action="{{ action('Stock_detailController@destroy',['id'=>$view->id]); }}" method="post" id="form1"> 
-         {{--<!-- url('dashboard/delete/'.$view->id) -->--}}
+     <form action="{{ url('dashboard/delete/'.$view->id) }}" method="post" id="form1"> 
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
