@@ -48,7 +48,7 @@
         </div>
 	</div>
 </div>
-<!-- ------------------------------------------------View------------------------------------------------------------- -->
+{{--  ------------------------------------------------View------------------------------------------------------------- --}}
 <div class="modal fade" id="viewModal{{$view->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
   aria-hidden="true">
    
@@ -93,7 +93,7 @@
     </div>
   </div>
 </div>
-<!-- ------------------------------------------------Edit------------------------------------------------------------ -->
+{{--  ------------------------------------------------Edit------------------------------------------------------------ --}}
 <div class="modal fade" id="editModal{{$view->id}}" tabindex="-1" aria-labelledby="edit" aria-hidden="true" role="dialog">
       <div class="modal-dialog">
     <div class="modal-content">
@@ -104,7 +104,7 @@
             </div>
         </div>
         <div class="modal-body">
-            <form class="form-horizontal" role="modal" method="post" action="{{ action('Stock_detailController@update',['id',$view->id]) }}">
+            <form class="form-horizontal" role="modal" method="post" action="{{ url('dashboard/'.$view->id) }}">
             {{ csrf_field() }}
              {{ method_field('PUT') }}
             <div class="form-group row add justify-content-center">
@@ -130,12 +130,12 @@
         </div>
         <div class="row justify-content-center">
 
-            <div class="custom-control custom-radio ">
-                <input type="radio" class="custom-control-input" id="defaultradio" name="nse_or_bse" value="NSE" checked>
+            <div class="custom-control custom-radio">
+                <input type="radio" class="custom-control-input" id="defaultChecked" name="nse_or_bse" value="0" checked>
                 <label class="custom-control-label  col-sm-4" for="defaultChecked"> NSE </label>
             </div>
-            <div class="custom-control custom-radio ">
-                <input type="radio" class="custom-control-input" id="defaultradio" name="nse_or_bse" value="BSE">
+            <div class="custom-control custom-radio">
+                <input type="radio" class="custom-control-input" id="defaultUnchecked" name="nse_or_bse" value="1">
                 <label class="custom-control-label  col-sm-4" for="defaultUnchecked"> BSE </label>
             </div>
         </div>
@@ -152,7 +152,7 @@
       <!-- modal-dialog --> 
     </div>
 </div>
-    <!-- ----------------------------------------------Sell-------------------------------------------------------- -->
+    {{-- ----------------------------------------------Sell-------------------------------------------------------- --}}
     <div class="modal fade" id="sellModal{{$view->id}}" role="dialog" tabindex="-1" aria-labelledby="sell" aria-hidden="true">
    
     <div class="modal-dialog">
@@ -163,13 +163,35 @@
             </div>
             <div class="modal-body">
             <div class="form-group">
-                <input class="form-control" type="text" name="stock_name" placeholder="Stock Name" pattern="/^\p{L}+$/u">
+                <p class="form-control" readonly>{{ $view->stock_name }}</p>
             </div>
             <div class="form-group">
-                <input class="form-control" type="text" name="buy_stock_quantity" placeholder="Stock Quantity" pattern="^[0-9]+$">
+                <p class="form-control"  readonly>Buy Quantity: {{ $view->buy_quantity }}</p>
+            </div>
+            
+            <div class="form-group">
+                <p class="form-control"  readonly>Bought time:  <?php $cur_time = strtotime("$current_time");
+                                                                    $created_time = strtotime("$view->created_at");
+                                                                    $minutes = (round(abs(($cur_time - $created_time) / 60),2)." minutes ago";
+                                                                    
+                                                                     if($minutes<60){
+                                                                         echo round($minutes,0)." minutes ago";
+                                                                     }elseif($minutes < 24*60){
+                                                                         echo round(($minutes/60),2)." hours ago";    
+                                                                     }
+                                                                     else{
+                                                                         echo round($minutes/(60*24),0)." days ago";    
+                                                                    }
+                                                                   ?>
+                
+                </p>
+            </div>
+            
+            <div class="form-group">
+                <input class="form-control" type="text" name="sell_stock_quantity" placeholder="Stock Quantity to Sell" pattern="/^[0-9]+$/igm">
             </div>
             <div class="form-group">
-            <input class="form-control" type="text" name="buy_stock_quantity" placeholder="Sell Stock Amount" pattern="^\s*(?=.*[1-9])\d*(?:\.\d{1,2})?\s*$">   
+                <input class="form-control" type="text" name="sell_price" placeholder="Sell Stock Amount : buyamount is {{ $view->buy_price }} " pattern="/^(\d*\.)?\d+$/igm">   
             </div>
             
             </div>
@@ -185,7 +207,7 @@
     <form id = "deleteStocks" action="{{ route('dashboard/'{{$views->}}') }}" method="post">
     @csrf
     </form> -->--}}
-    <!-- ----------------------------Delete---------------------------------- -->
+    {{--  ----------------------------Delete----------------------------------  --}}
     <div class="modal fade" id="deleteModal{{$view->id}}" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
      <form action="{{ action('Stock_detailController@destroy',['id'=>$view->id]) }}" method="post" id="form1"> 
              {{ csrf_field() }}
@@ -213,7 +235,7 @@
                   
                 </div>
             </div>
-            <!-- It's script is inside layouts/app.blade.php --> 
+         
         </div>
         </form>
     </div>

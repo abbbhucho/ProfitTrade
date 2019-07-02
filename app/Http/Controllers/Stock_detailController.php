@@ -16,9 +16,10 @@ class Stock_detailController extends Controller
     public function index()
     {
         //return view('user.dashboard');
+        $current_time = strtotime(Carbon::now());
         $views = Stock_detail::all()->where('user_id',Auth::user()->id)->where('fulfilled',0);
         // dd($views);
-        return view('user.viewstocks',compact('views'));
+        return view('user.viewstocks',compact('views','current_time'));
     }
     public function history()
     {
@@ -215,10 +216,10 @@ class Stock_detailController extends Controller
         //print_r($request);
         
     }
-    protected function cal_buy_gross_total(float $var1,int $var2){
+    protected function cal_buy_gross_total($var1, $var2){
             return $var2*$var1;
     }
-    protected function cal_buy_tc_total(float $var1,int $var2,float $var3){
+    protected function cal_buy_tc_total( $var1, $var2, $var3){
             $var3 = $var3/100;
             return ($var1*$var2)/100 *($var3); 
     }
@@ -232,12 +233,12 @@ class Stock_detailController extends Controller
                 return 20;
             }
     }
-    protected function cal_buy_gst_total(float $var1,float $var2,float $var3,float $var4){
+    protected function cal_buy_gst_total( $var1, $var2, $var3, $var4){
             $var3 = $var3/100;
             
             return ($this->cal_buy_b_total($var1,$var2)+$var3)*$var4;
     }
-    protected function cal_buy_stt_total(float $gt,float $del_stt_charge,float $intra_stt_charge,  $sell_quantity,$sell_price){
+    protected function cal_buy_stt_total( $gt, $del_stt_charge,$intra_stt_charge,$sell_quantity,$sell_price){
             if($sell_quantity && $sell_price != null){
                     $val = ($gt*$intra_stt_charge)/100;
                     return $val;
@@ -246,7 +247,7 @@ class Stock_detailController extends Controller
                     return $val;
             }   
     }
-    protected function cal_buy_sd_total(float $gt,float $del_sd_charge,float $intra_sd_charge,  $sell_quantity,$sell_price){
+    protected function cal_buy_sd_total($gt,$del_sd_charge,$intra_sd_charge,$sell_quantity,$sell_price){
         if($sell_quantity && $sell_price != null){
             $val = ($gt*$intra_sd_charge)/100;
             return $val;
@@ -267,16 +268,19 @@ class Stock_detailController extends Controller
      */
     public function show($id){
 
-            
-            $stocks = Stock_detail::all()->where('user_id',Auth::user()->id);
-            //dd($stocks); 
-            if(count($stocks) > 0){
-                $flag=1;
-            }   else{$flag=0;}
-            // dd($flag);
-            
-            return view('user.portfolio',compact('stocks','flag'));
-           
+        $sd = Stock_detail::all()->where('user_id',Auth::user()->id)->where('fulfilled',0)->where('id',$id);
+        $current_time = strtotime(Carbon::now());
+        $created_time = strtotime($sd->created_at);
+                $minutes = round(abs($to_time - $from_time) / 60,2). " minute";
+                if($minutes < 60){ 
+                     return round($minutes,0);
+                    }
+                elseif($minutes <24*60){
+                     return round(($minutes/60),0)." hours ago";
+                    }
+                elseif($minutes > 24*60){
+                     return round($minutes/(60*24),0)." day ago";
+                    }  
         }
        
     /**
@@ -285,11 +289,15 @@ class Stock_detailController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
-    {
-        //
+    
+     /*
+      * Sell the stocks 
+     */
+    public function sell(Request $request, $id){
+       
+        $sdtime = Stock_detail::all()->where('user_id',Auth::user()->id)->where('id',$id);
     }
-
+   
     /**
      * Update the specified resource in storage.
      *
@@ -299,7 +307,7 @@ class Stock_detailController extends Controller
      */
     public function update(Request $request, $id)
     {
-        // dd("update");
+        // dd($request);
         $usr = Auth::user();
         //$sdtime = Stock_detail::all()->where('user_id',Auth::user()->id);
         //dd($sdtime[0]->created_at->toTimeString());
@@ -312,32 +320,38 @@ class Stock_detailController extends Controller
         //$price
         
        //------------------------------------------Request Variables----------------------------------------------------
+        
+      
         $stock_name = $request['stock_name'];
-        $buy_stock_quantity = $request['stock_quantity'];
-        $buy_stock_price =  $request['stock_price'];
+        $buy_stock_quantity = $request['buy_stock_quantity'];
+        $buy_stock_price =  $request['buy_stock_price'];
         $sell_stock_quantity = $request['sell_stock_quantity'];
         $sell_stock_price =  $request['sell_stock_price'];
-        $nse_or_bse = $request['exampleRadios'];
+        $nse_or_bse = $request['nse_or_bse'];
 
         $user_id = $usr->id;
         // ----------------------------------------Input values--------------------------------------------------------------------------------------
-        $stockdetail = new Stock_detail;
-        $stockdetail->stock_name = $stock_name;
+   
+        $stockdetail = Stock_detail::find($id);
+        // dd($stockdetail);
+        
+        //dd($stock_detail);
+        $stockdetail->stock_name  = $stock_name;
         $stockdetail->buy_quantity = $buy_stock_quantity;
         $stockdetail->buy_price = $buy_stock_price;
         $stockdetail->sell_quantity = $sell_stock_quantity;
         $stockdetail->sell_price = $sell_stock_price;
         $stockdetail->user_id = $user_id;
-        $stockdetail->fulfilled = 1;
+        $stockdetail->fulfilled = 1;//fulfilled -> 1 specify not fulfilled
         // ----------------------------------------Condition to check fulfilled stock or not--------------------------------------------------------------------------------------
         $fulfilled = 1;
         if($buy_stock_quantity > $sell_stock_quantity)
         {
-            $stockdetail->fulfilled = 1;//stocks are left
+            $stockdetail->fulfilled = 0;//stocks are left
             $fulfilled = 0;
         }
         else if($buy_stock_quantity == $sell_stock_quantity){
-            $stockdetail->fulfilled = 0;//no stock left
+            $stockdetail->fulfilled = 1;//no stock left
             $fulfilled = 1;
         }
         else{
@@ -349,7 +363,7 @@ class Stock_detailController extends Controller
         $stockdetail->nse_or_bse = $nse_or_bse;
         //for NSE  
         if($nse_or_bse == '0'){
-            $id = 1;
+            $charges_id = 1;
             $price = Charge::all()->where('id',1);
             //----------------------------------------Calculations related to buy--------------------------------------------------------------------------------------
             $buy_gross_total = $this->cal_buy_gross_total($buy_stock_price, $buy_stock_quantity);            
@@ -378,34 +392,11 @@ class Stock_detailController extends Controller
             $stockdetail->save();
             
             
-            //----------------------check---------------------------
-            if($fulfilled == 0 ){
-            $new_stock_quantity = $buy_stock_quantity - $sell_stock_quantity;
-            $stockdetail_2 = new Stock_detail;
-            $stockdetail_2->fulfilled = 1; 
-            $stockdetail_2->user_id = $usr->id;
-            $stockdetail_2->stock_name = $stock_name;
-            $stockdetail_2->buy_quantity = $new_stock_quantity;
-            $stockdetail_2->buy_price = $buy_stock_price;
-           
-            $stockdetail_2->nse_or_bse = $nse_or_bse;
-            //------------------------calculation for buy in left stocks-------------------------------------------------------------------------------------------------
-            $buy_gross_total2 = $this->cal_buy_gross_total($buy_stock_price, $new_stock_quantity);
-            $stockdetail_2->buy_gross_total =  $buy_gross_total2;
-            $stockdetail_2->buy_tc_total =  $this->cal_buy_tc_total($buy_stock_price,$new_stock_quantity,$price[0]->buy_trans_charges);
-            $stockdetail_2->buy_b_total = $this->cal_buy_b_total($buy_stock_price,$price[0]->buy_b_percent);
-            $stockdetail_2->buy_gst_total = $this->cal_buy_gst_total($buy_stock_price,$price[0]->buy_b_percent,$price[0]->buy_trans_charges,$price[1]->buy_gst_percent);
-            $stockdetail_2->buy_stt_total = $this->cal_buy_stt_total($buy_gross_total2,$price[0]->del_buy_stt_percent,$price[0]->intra_buy_stt_percent,$sell_stock_quantity,$sell_stock_price);
-            $stockdetail_2->buy_sd_total = $this->cal_buy_sd_total($buy_gross_total2,$price[0]->del_buy_sd_percent,$price[0]->intra_buy_sd_percent,$sell_stock_quantity,$sell_stock_price);
-            $stockdetail_2->buy_net_total =($buy_gross_total2)+($this->cal_buy_tc_total($buy_stock_price,$new_stock_quantity,$price[0]->buy_trans_charges))+($this->cal_buy_b_total($buy_stock_price,$price[0]->buy_b_percent))+($this->cal_buy_gst_total($buy_stock_price,$price[0]->buy_b_percent,$price[0]->buy_trans_charges,$price[1]->buy_gst_percent))+($this->cal_buy_stt_total($buy_gross_total,$price[0]->del_buy_stt_percent,$price[0]->intra_buy_stt_percent,$sell_stock_quantity,$sell_stock_price))+($this->cal_buy_sd_total($buy_gross_total,$price[0]->del_buy_sd_percent,$price[0]->intra_buy_sd_percent,$sell_stock_quantity,$sell_stock_price));
             
-            $stockdetail_2->save();
-
-            }
         }
         else
         {
-            $id = 2;
+            $charges_id = 2;
             $price = Charge::all()->where('id',2);
             
             //dd(gettype($request['exampleRadios']));
@@ -438,29 +429,7 @@ class Stock_detailController extends Controller
             $stockdetail->save();
             
             
-            //----------------------check---------------------------
-            if($fulfilled == 0 ){
-            $new_stock_quantity = $buy_stock_quantity - $sell_stock_quantity;
-            $stockdetail_2 = new Stock_detail;
-            $stockdetail_2->fulfilled = 0; 
-            $stockdetail_2->user_id = $usr->id;
-            $stockdetail_2->stock_name = $stock_name;
-            $stockdetail_2->buy_quantity = $new_stock_quantity;
-            $stockdetail_2->buy_price = $buy_stock_price;
-           
-            $stockdetail_2->nse_or_bse = $nse_or_bse;
-            //------------------------calculation for buy in left stocks-------------------------------------------------------------------------------------------------
-            $buy_gross_total2 = $this->cal_buy_gross_total($buy_stock_price, $new_stock_quantity);
-            $stockdetail_2->buy_gross_total =  $buy_gross_total2;
-            $stockdetail_2->buy_tc_total =  $this->cal_buy_tc_total($buy_stock_price,$new_stock_quantity,$price[1]->buy_trans_charges);
-            $stockdetail_2->buy_b_total = $this->cal_buy_b_total($buy_stock_price,$price[1]->buy_b_percent);
-            $stockdetail_2->buy_gst_total = $this->cal_buy_gst_total($buy_stock_price,$price[1]->buy_b_percent,$price[1]->buy_trans_charges,$price[1]->buy_gst_percent);
-            $stockdetail_2->buy_stt_total = $this->cal_buy_stt_total($buy_gross_total2,$price[1]->del_buy_stt_percent,$price[1]->intra_buy_stt_percent,$sell_stock_quantity,$sell_stock_price);
-            $stockdetail_2->buy_sd_total = $this->cal_buy_sd_total($buy_gross_total2,$price[1]->del_buy_sd_percent,$price[1]->intra_buy_sd_percent,$sell_stock_quantity,$sell_stock_price);
-            $stockdetail_2->buy_net_total =($buy_gross_total2)+($this->cal_buy_tc_total($buy_stock_price,$new_stock_quantity,$price[1]->buy_trans_charges))+($this->cal_buy_b_total($buy_stock_price,$price[1]->buy_b_percent))+($this->cal_buy_gst_total($buy_stock_price,$price[1]->buy_b_percent,$price[1]->buy_trans_charges,$price[1]->buy_gst_percent))+($this->cal_buy_stt_total($buy_gross_total,$price[1]->del_buy_stt_percent,$price[1]->intra_buy_stt_percent,$sell_stock_quantity,$sell_stock_price))+($this->cal_buy_sd_total($buy_gross_total,$price[1]->del_buy_sd_percent,$price[1]->intra_buy_sd_percent,$sell_stock_quantity,$sell_stock_price));
             
-            $stockdetail_2->save();
-            }   
         }        
             return redirect('dashboard/');
     }
