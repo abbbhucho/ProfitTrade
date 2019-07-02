@@ -104,7 +104,11 @@
             </div>
         </div>
         <div class="modal-body">
+<<<<<<< HEAD
             <form class="form-horizontal" role="modal" method="post" action="{{ url('dashboard/'.$view->id) }}">
+=======
+            <form class="form-horizontal" role="modal" method="post" action="{{ action('Stock_detailController@update',['id',$view->id]) }}">
+>>>>>>> ed004f3f65aa6f727128eac6c3ec435874d67142
             {{ csrf_field() }}
              {{ method_field('PUT') }}
             <div class="form-group row add justify-content-center">
@@ -130,12 +134,21 @@
         </div>
         <div class="row justify-content-center">
 
+<<<<<<< HEAD
             <div class="custom-control custom-radio">
                 <input type="radio" class="custom-control-input" id="defaultChecked" name="nse_or_bse" value="0" checked>
                 <label class="custom-control-label  col-sm-4" for="defaultChecked"> NSE </label>
             </div>
             <div class="custom-control custom-radio">
                 <input type="radio" class="custom-control-input" id="defaultUnchecked" name="nse_or_bse" value="1">
+=======
+            <div class="custom-control custom-radio ">
+                <input type="radio" class="custom-control-input" id="defaultradio" name="nse_or_bse" value="NSE" checked>
+                <label class="custom-control-label  col-sm-4" for="defaultChecked"> NSE </label>
+            </div>
+            <div class="custom-control custom-radio ">
+                <input type="radio" class="custom-control-input" id="defaultradio" name="nse_or_bse" value="BSE">
+>>>>>>> ed004f3f65aa6f727128eac6c3ec435874d67142
                 <label class="custom-control-label  col-sm-4" for="defaultUnchecked"> BSE </label>
             </div>
         </div>
