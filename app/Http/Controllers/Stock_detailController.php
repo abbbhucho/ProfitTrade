@@ -8,6 +8,9 @@ use App\Charge;
 use Auth;
 class Stock_detailController extends Controller
 {
+    public function __construct(){
+        $this->middleware('auth');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -278,8 +281,8 @@ class Stock_detailController extends Controller
                 elseif($minutes <24*60){
                      return round(($minutes/60),0)." hours ago";
                     }
-                elseif($minutes > 24*60){
-                     return round($minutes/(60*24),0)." day ago";
+                else{
+                     return round(($minutes/1440),0)." day ago";
                     }  
         }
        
@@ -295,7 +298,8 @@ class Stock_detailController extends Controller
      */
     public function sell(Request $request, $id){
        
-        $sdtime = Stock_detail::all()->where('user_id',Auth::user()->id)->where('id',$id);
+        $sell = Stock_detail::find($id);
+        dd($sell);
     }
    
     /**

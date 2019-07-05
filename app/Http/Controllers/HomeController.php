@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 use App\User;
+use Auth;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -13,7 +15,7 @@ class HomeController extends Controller
      */
     public function __construct()
     {
-        // $this->middleware('auth');
+         $this->middleware('auth');
     }
 
     /**
@@ -33,6 +35,12 @@ class HomeController extends Controller
         return view('user.dashboard');
         // $users = DB::select('select * from users');
         // return view('user.dashboard',with(['users'=>$id]);
+    }
+    public function show($id)
+    {
+        $present_time = strtotime(Carbon::now());
+        $unique_users = User::all()->where('id',Auth::id());
+        return view('user.profile',compact('unique_users','present_time'));
     }
     // public function show($id){
          

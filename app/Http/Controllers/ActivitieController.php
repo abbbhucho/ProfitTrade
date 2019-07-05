@@ -3,9 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Auth;
 
 class ActivitieController extends Controller
 {
+    public function __construct(){
+    $this->middleware('auth');
+}
     /**
      * Display a listing of the resource.
      *
@@ -13,7 +17,12 @@ class ActivitieController extends Controller
      */
     public function index()
     {
-        //
+        $id = Auth::id();
+        $activity = Activitie::all();
+        $admin = Admin::all()->where('id',$id);
+        if(!empty($admin)){
+            return view('activity')->compact('activity');
+        }
     }
 
     /**

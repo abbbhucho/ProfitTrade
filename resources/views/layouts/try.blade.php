@@ -56,8 +56,8 @@
           <i class="fas fa-user-circle fa-fw fa-2x"></i> {{ Auth::user()->name }} 
         </a>
         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
-          <a class="dropdown-item" href="#">Profile</a>
-          <a class="dropdown-item" href="#">Activity Log</a>
+          <a class="dropdown-item" href="{{ url('user/'.Auth::user()->id) }}">Profile</a>
+          <a class="dropdown-item" href="">Activity Log</a>
           <div class="dropdown-divider"></div>
           <a class="dropdown-item" href="{{ route('logout') }}"  onclick="event.preventDefault();
                                              document.getElementById('logout-form').submit();">{{ __('Logout') }}</a>
@@ -87,13 +87,13 @@
         </a>
         <div class="dropdown-menu" aria-labelledby="pagesDropdown" style="background-color:#2c3237;">
           <h6 class="dropdown-header" style="color:#d35400;">Actions</h6>
-          <a class="dropdown-item" href="login.html" style=" color:#f39c12;">Add Stocks</a>
-          <a class="dropdown-item" href="register.html" style=" color:#f39c12;">View Stocks</a>
+        <a class="dropdown-item" href="{{ url('/home') }}" style=" color:#f39c12;">Add Stocks</a>
+        <a class="dropdown-item" href="{{ url('/dashboard') }}" style=" color:#f39c12;">View Stocks</a>
           
           
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="charts.html">
+        <a class="nav-link" href="{{url("/history") }}">
           <i class="fas fa-fw fa-history"></i>
           <span>Stocks History</span></a>
       </li>
@@ -113,7 +113,7 @@
           <li class="breadcrumb-item">
             <a href="{{route('dashboard')}}">Dashboard</a>
           </li>
-        {{-- <!-- <li class="breadcrumb-item active">Blank Page</li> -->--}}
+        {{-- -- <li class="breadcrumb-item active">Blank Page</li> ----}}
         </ol>
         @endguest
         <!-- Page Content -->

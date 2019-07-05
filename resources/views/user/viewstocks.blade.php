@@ -104,16 +104,12 @@
             </div>
         </div>
         <div class="modal-body">
-<<<<<<< HEAD
             <form class="form-horizontal" role="modal" method="post" action="{{ url('dashboard/'.$view->id) }}">
-=======
-            <form class="form-horizontal" role="modal" method="post" action="{{ action('Stock_detailController@update',['id',$view->id]) }}">
->>>>>>> ed004f3f65aa6f727128eac6c3ec435874d67142
             {{ csrf_field() }}
              {{ method_field('PUT') }}
             <div class="form-group row add justify-content-center">
 
-            <input class="form-control" type="text" id="name" name="stock_name" placeholder="Stock Name" pattern="/^\p{L}+$/u" style="width: 80%;">
+            <input class="form-control" type="text" id="name" name="stock_name" placeholder="Stock Name"  style="width: 80%;">
             {{-- <!-- <p class="error text-center alert alert-danger hidden"></p>  -->--}}
         </div>
         <div class="form-group row justify-content-center">
@@ -134,21 +130,12 @@
         </div>
         <div class="row justify-content-center">
 
-<<<<<<< HEAD
             <div class="custom-control custom-radio">
                 <input type="radio" class="custom-control-input" id="defaultChecked" name="nse_or_bse" value="0" checked>
                 <label class="custom-control-label  col-sm-4" for="defaultChecked"> NSE </label>
             </div>
             <div class="custom-control custom-radio">
                 <input type="radio" class="custom-control-input" id="defaultUnchecked" name="nse_or_bse" value="1">
-=======
-            <div class="custom-control custom-radio ">
-                <input type="radio" class="custom-control-input" id="defaultradio" name="nse_or_bse" value="NSE" checked>
-                <label class="custom-control-label  col-sm-4" for="defaultChecked"> NSE </label>
-            </div>
-            <div class="custom-control custom-radio ">
-                <input type="radio" class="custom-control-input" id="defaultradio" name="nse_or_bse" value="BSE">
->>>>>>> ed004f3f65aa6f727128eac6c3ec435874d67142
                 <label class="custom-control-label  col-sm-4" for="defaultUnchecked"> BSE </label>
             </div>
         </div>
@@ -185,41 +172,47 @@
             <div class="form-group">
                 <p class="form-control"  readonly>Bought time:  <?php $cur_time = strtotime("$current_time");
                                                                     $created_time = strtotime("$view->created_at");
-                                                                    $minutes = (round(abs(($cur_time - $created_time) / 60),2)." minutes ago";
+                                                                    $minutes = round((abs($cur_time - $created_time / 60)),2);
                                                                     
                                                                      if($minutes<60){
                                                                          echo round($minutes,0)." minutes ago";
                                                                      }elseif($minutes < 24*60){
                                                                          echo round(($minutes/60),2)." hours ago";    
                                                                      }
-                                                                     else{
-                                                                         echo round($minutes/(60*24),0)." days ago";    
+                                                                     elseif($minutes < 24*60*365){
+                                                                         echo round($minutes/(1440),0)." days ago";    
+                                                                    }
+                                                                    else{
+                                                                        echo round($minutes/(525600),0)." years ago"; 
                                                                     }
                                                                    ?>
                 
                 </p>
             </div>
-            
+        <form action="{{ url('sell/'.$view->id) }}" method="post">  
+            {{ csrf_field() }}
+            {{ method_field('PUT') }}
             <div class="form-group">
-                <input class="form-control" type="text" name="sell_stock_quantity" placeholder="Stock Quantity to Sell" pattern="/^[0-9]+$/igm">
+                <input class="form-control" type="number" name="sell_stock_quantity" placeholder="Stock Quantity to Sell" pattern="/^[0-9]+$/">
             </div>
             <div class="form-group">
-                <input class="form-control" type="text" name="sell_price" placeholder="Sell Stock Amount : buyamount is {{ $view->buy_price }} " pattern="/^(\d*\.)?\d+$/igm">   
+                <input class="form-control" type="number" name="sell_price" placeholder="Sell Stock Price : buyamount is {{ $view->buy_price }} " pattern="/^(\d*\.)?\d+$/">   
             </div>
             
             </div>
                 <div class="modal-footer">
-                <button type="button" class="btn btn-success btn-lg" style="width: 40%;"><i class="fas fa-check"></i> Sell</button>
+                <button type="submit" class="btn btn-success btn-lg" style="width: 40%;"><i class="fas fa-check"></i> Sell</button>
             </div>
+        </form>    
         </div>
      
   </div>
      
     </div>
-{{--<!--     
+{{--     
     <form id = "deleteStocks" action="{{ route('dashboard/'{{$views->}}') }}" method="post">
     @csrf
-    </form> -->--}}
+    </form> --}}
     {{--  ----------------------------Delete----------------------------------  --}}
     <div class="modal fade" id="deleteModal{{$view->id}}" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
      <form action="{{ action('Stock_detailController@destroy',['id'=>$view->id]) }}" method="post" id="form1"> 
