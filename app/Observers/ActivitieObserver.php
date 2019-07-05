@@ -14,6 +14,7 @@ class ActivitieObserver
      */
     public function created($model)
     {
+        //dd($model);
         if ($model->wasRecentlyCreated) {
             // Data was just created
             $action = 'created';
@@ -25,7 +26,7 @@ class ActivitieObserver
             $activity = new Activitie;
             $activity->id = $model->id;
             $activity->user_id = Auth::user()->id;
-            $activity->description = $action; 
+            $activity->description =  Auth::user()->name.",".$action.",".$model->stock_name.",".$model->buy_quantity.",@".$model->buy_price; 
             $activity->save();
         
     }
@@ -52,7 +53,7 @@ class ActivitieObserver
             $activity = new Activitie;
             $activity->id = $model->id;
             $activity->user_id = Auth::user()->id;
-            $activity->description = 'deleted'; 
+            $activity->description = Auth::user()->name.",deleted,".$model->stock_name.",".$model->buy_quantity.",@".$model->buy_price; 
             $activity->save();
     }
 

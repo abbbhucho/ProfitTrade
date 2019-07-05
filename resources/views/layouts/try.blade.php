@@ -16,7 +16,10 @@
   <!-- Custom fonts for this template-->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.min.css" rel="stylesheet">
   <link href="{{ asset('css/sb-admin.css') }}" rel="stylesheet">
-  
+  <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+
+  <!-- Custom Scripts -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"></script>
 </head>
 
 <body id="page-top">
@@ -75,7 +78,7 @@
     <!-- Sidebar -->
     <ul class="sidebar navbar-nav">
       <li class="nav-item">
-        <a class="nav-link" href="index.html">
+        <a class="nav-link" href="{{ url('/home') }}">
           <i class="fas fa-fw fa-tachometer-alt"></i>
           <span>Dashboard</span>
         </a>
@@ -87,7 +90,7 @@
         </a>
         <div class="dropdown-menu" aria-labelledby="pagesDropdown" style="background-color:#2c3237;">
           <h6 class="dropdown-header" style="color:#d35400;">Actions</h6>
-        <a class="dropdown-item" href="{{ url('/home') }}" style=" color:#f39c12;">Add Stocks</a>
+        <a class="dropdown-item" href="{{ url('/addstocks') }}" style=" color:#f39c12;">Add Stocks</a>
         <a class="dropdown-item" href="{{ url('/dashboard') }}" style=" color:#f39c12;">View Stocks</a>
           
           
@@ -154,7 +157,34 @@
 
   <!-- Custom scripts for all pages-->
   <script src="{{ asset('js/sb-admin.min.js') }}"></script>
+  <script>
+        let myChart = document.getElementById('myChart').getContext('2d');
 
+        let lineChart = new Chart(myChart, {
+          type:'line',
+          data:{
+                labels:['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+                datasets:[{
+                  label:'Total Profits',
+                  data:[
+                  120,
+                  110,
+                  20,
+                  200,
+                  1000,
+                  50,
+                  200,
+                  300,
+                  500,
+                  900,
+                  100,
+                  600,
+                ],
+                  background-color:'#e74c3c',
+                }]
+          },
+        });
+  </script>
 </body>
 
 </html>

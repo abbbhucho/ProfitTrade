@@ -130,7 +130,7 @@ class Stock_detailController extends Controller
             if($fulfilled == 0 ){
             $new_stock_quantity = $buy_stock_quantity - $sell_stock_quantity;
             $stockdetail_2 = new Stock_detail;
-            $stockdetail_2->fulfilled = 1; 
+            $stockdetail_2->fulfilled = $fulfilled; 
             $stockdetail_2->user_id = $usr->id;
             $stockdetail_2->stock_name = $stock_name;
             $stockdetail_2->buy_quantity = $new_stock_quantity;
@@ -142,13 +142,13 @@ class Stock_detailController extends Controller
             $stockdetail_2->buy_gross_total =  $buy_gross_total2;
             $stockdetail_2->buy_tc_total =  $this->cal_buy_tc_total($buy_stock_price,$new_stock_quantity,$price[0]->buy_trans_charges);
             $stockdetail_2->buy_b_total = $this->cal_buy_b_total($buy_stock_price,$price[0]->buy_b_percent);
-            $stockdetail_2->buy_gst_total = $this->cal_buy_gst_total($buy_stock_price,$price[0]->buy_b_percent,$price[0]->buy_trans_charges,$price[1]->buy_gst_percent);
+            $stockdetail_2->buy_gst_total = $this->cal_buy_gst_total($buy_stock_price,$price[0]->buy_b_percent,$price[0]->buy_trans_charges,$price[0]->buy_gst_percent);
             $stockdetail_2->buy_stt_total = $this->cal_buy_stt_total($buy_gross_total2,$price[0]->del_buy_stt_percent,$price[0]->intra_buy_stt_percent,$sell_stock_quantity,$sell_stock_price);
             $stockdetail_2->buy_sd_total = $this->cal_buy_sd_total($buy_gross_total2,$price[0]->del_buy_sd_percent,$price[0]->intra_buy_sd_percent,$sell_stock_quantity,$sell_stock_price);
-            $stockdetail_2->buy_net_total =($buy_gross_total2)+($this->cal_buy_tc_total($buy_stock_price,$new_stock_quantity,$price[0]->buy_trans_charges))+($this->cal_buy_b_total($buy_stock_price,$price[0]->buy_b_percent))+($this->cal_buy_gst_total($buy_stock_price,$price[0]->buy_b_percent,$price[0]->buy_trans_charges,$price[1]->buy_gst_percent))+($this->cal_buy_stt_total($buy_gross_total,$price[0]->del_buy_stt_percent,$price[0]->intra_buy_stt_percent,$sell_stock_quantity,$sell_stock_price))+($this->cal_buy_sd_total($buy_gross_total,$price[0]->del_buy_sd_percent,$price[0]->intra_buy_sd_percent,$sell_stock_quantity,$sell_stock_price));
+            $stockdetail_2->buy_net_total =($buy_gross_total2)+($this->cal_buy_tc_total($buy_stock_price,$new_stock_quantity,$price[0]->buy_trans_charges))+($this->cal_buy_b_total($buy_stock_price,$price[0]->buy_b_percent))+($this->cal_buy_gst_total($buy_stock_price,$price[0]->buy_b_percent,$price[0]->buy_trans_charges,$price[0]->buy_gst_percent))+($this->cal_buy_stt_total($buy_gross_total,$price[0]->del_buy_stt_percent,$price[0]->intra_buy_stt_percent,$sell_stock_quantity,$sell_stock_price))+($this->cal_buy_sd_total($buy_gross_total,$price[0]->del_buy_sd_percent,$price[0]->intra_buy_sd_percent,$sell_stock_quantity,$sell_stock_price));
             
             $stockdetail_2->save();
-
+            return redirect('dashboard/');
             }
         }
         else

@@ -21,7 +21,10 @@ Route::get('layouts/try', function () {
 
 //Auth::routes();
 Auth::routes(['verify' => false]);
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/home','HomeController@index')->name('home');
+Route::get('/addstocks',function(){
+    return view('user.dashboard');
+});
 Route::post('/sell/{}','Stock_detailController@sell');
 //Fetch the records for the user
 Route::resource('dashboard','Stock_detailController',['names' => [

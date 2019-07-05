@@ -1,8 +1,10 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Activitie;
 use App\User;
 use Auth;
+use App\Stock_detail;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -29,12 +31,16 @@ class HomeController extends Controller
     // }
     public function index()
     {
-
-        // $users = User::all()->where('id',$id);
-        // return view('user.dashboard',compact('users'));
-        return view('user.dashboard');
-        // $users = DB::select('select * from users');
-        // return view('user.dashboard',with(['users'=>$id]);
+        $stock_total = Stock_Detail::all()->where('user_id',Auth::id());
+        $total_transaction = count($stock_total);
+        $show_acts = Activitie::get()->where('user_id',Auth::id())->take(-5);//fetch the last 5 records
+        //dd($show_acts);
+        return view('user.home',compact('show_acts','total_transaction'));
+        // // $users = User::all()->where('id',$id);
+        // // return view('user.dashboard',compact('users'));
+        // return view('user.dashboard');
+        // // $users = DB::select('select * from users');
+        // // return view('user.dashboard',with(['users'=>$id]);
     }
     public function show($id)
     {
