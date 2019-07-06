@@ -43,11 +43,14 @@ Route::get('history','Stock_detailController@history');
 // Route::get('admin', ['middleware' =>'admin',function(){
 //     return "Hello This is admin panel";
 // }]);
-// Route::middleware(['admin'])->group(function(){
-//     Route::get('/',function(){
-//         return "you are inside admin panel";
-//     });
-// });
+Route::middleware(['admin'])->group(function(){
+    Route::get('/home','AdminController@index')->name('home');
+    Route::resource('admin/actions','AdminController');
+    Route::get('/admin/allstocks','AdminController@allStocks'); 
+       
+    
+   
+});
 /*------------------------------------------------------------------------------------*/ 
 //uses two middleware (basically for the idea of using two middleware first to know users and then admins)
 // Route::middleware(['users', 'admins'])->group(function () {

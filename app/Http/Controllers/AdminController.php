@@ -1,8 +1,12 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Stock_detail;
+use App\Activitie;
+use App\User;
+use Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 class AdminController extends Controller
 {
     /**
@@ -12,7 +16,54 @@ class AdminController extends Controller
      */
     public function index()
     {
-       //
+        // find the id of Admin
+
+       /**---------------------Total Users----------------------- */
+       $users_total = Stock_Detail::count();
+       
+       /**---------------------Total Traded Value----------------------- */
+       
+       $stock_buy_total = Stock_Detail::all()->sum('buy_price');
+       $stock_sell_total = Stock_Detail::all()->sum('sell_price');
+       $total_traded_value = $stock_buy_total + $stock_sell_total;
+       
+       /**---------------------Total Profit for admin(here in this case a broker)----------------------- */
+       
+       $profit_total = Stock_Detail::all()->sum('profit');
+       $total_traded_value = round($total_traded_value,2);
+       /*--------------------------------------------------------------------------------------------*/
+       /*------------------------To calculate total expense ---------------------------------------- */
+       $buy_stt_total = Stock_Detail::all()->sum('buy_stt_total');
+       $buy_sd_total = Stock_Detail::all()->sum('buy_sd_total');
+       $buy_b_total = Stock_Detail::all()->sum('buy_b_total');
+       $buy_gst_total = Stock_Detail::all()->sum('buy_gst_total');
+       $buy_transactionCharges_total = Stock_Detail::all()->sum('buy_tc_total');
+       $sell_stt_total = Stock_Detail::all()->sum('sell_stt_total');
+       $sell_sd_total = Stock_Detail::all()->sum('sell_sd_total');
+       $sell_b_total = Stock_Detail::all()->sum('sell_b_total');
+       $sell_gst_total = Stock_Detail::all()->sum('sell_gst_total');
+       $sell_transactionCharges_total = Stock_Detail::all()->sum('sell_tc_total');
+
+       $expense = collect([
+                        $buy_stt_total, $buy_sd_total, $buy_b_total, $buy_gst_total, $buy_transactionCharges_total, $sell_stt_total, $sell_sd_total, $sell_b_total, $sell_gst_total, $sell_transactionCharges_total     
+                   ]);
+       $total_expense = $expense->reduce(function($total_expense, $expense){
+                   return $total_expense+$expense;
+       });    
+       //dd($total_expense);
+       $total_expense = round($total_expense,2);
+       /*------------------------------------------------------------------------------------------- */ 
+       
+       
+       // $total_buy_price = $stock_total->buy_price;
+      
+       // for($i = 0; $i < $total_transaction; $i++){
+       //     $total_buy_price[i] +=  
+       // }
+       $show_acts = Activitie::get()->where('user_id',Auth::id())->take(-5);//fetch the last 5 records
+       //dd($show_acts);
+       return view('admin.home',compact('show_acts','users_total','total_traded_value','profit_total','total_expense'));
+       
     }
 
     /**
@@ -22,7 +73,8 @@ class AdminController extends Controller
      */
     public function create()
     {
-        //
+        $peoples = User::all();
+        return view('admin.viewusers',compact('peoples'));
       
     }
 
@@ -34,8 +86,24 @@ class AdminController extends Controller
      */
     public function store(Request $request)
     {
-        //
-        return view('admin.create');
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|regex:/[-0-9a-zA-Z.+_]+@[-0-9a-zA-Z.+_]+.[a-zA-Z]{2,4}/|max:255|unique:users,email',
+            'password' => 'required|string|min:8|confirmed',
+            'phone' => 'required|numeric|unique:users,phone',
+            'address' => 'required|string|min:1',
+            
+        ]);
+        $user = new User;        
+        $user->name = $request['name'];        
+        $user->email = $request['email'];
+        $user->phone = $request['phone'];  
+        $user->address = $request['address']; 
+        $user->password = Hash::make($request['password']);        
+        $user->save();
+
+        return redirect()->back()->with('success', 'User created successfully.');
+        
     }
 
     /**
@@ -44,9 +112,9 @@ class AdminController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
-        //
+    public function allStocks(){
+        $stocks = Stock_detail::all()->where('fulfilled',1);
+        return view('admin.viewallstocks',compact('stocks'));
     }
 
     /**
@@ -69,7 +137,15 @@ class AdminController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+
+        $update_users = User::find($id);
+
+        $update_users->name  = $request['name'];
+        $update_users->email =  $request['email'];
+        $update_users->phone =  $request['phone'];
+        $update_users->address =$request['address'];
+        $update_users->save();
+        return redirect()->back()->with('success', 'User created successfully.');
     }
 
     /**
@@ -80,6 +156,8 @@ class AdminController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $delete = User::find($id);
+        $delete->delete();
+        return back();
     }
 }

@@ -17,7 +17,7 @@
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.min.css" rel="stylesheet">
   <link href="{{ asset('css/sb-admin.css') }}" rel="stylesheet">
   <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.css"  rel="stylesheet">
   <!-- Custom Scripts -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"></script>
 </head>
@@ -26,11 +26,10 @@
 
   <nav class="navbar navbar-expand navbar-dark bg-dark static-top">
 
+      <button class="btn btn-link btn-sm text-white order-1 order-sm-0" id="sidebarToggle" href="#">
+          <i class="fas fa-bars"></i>
+      </button>
     <a class="navbar-brand mr-1" href="{{ url('/') }}"> {{ config('app.name', 'Profit Trade') }}</a>
-
-    <button class="btn btn-link btn-sm text-white order-1 order-sm-0" id="sidebarToggle" href="#">
-      <i class="fas fa-bars"></i>
-    </button>
 
     <!-- Navbar -->
      <!-- Left Side Of Navbar -->
@@ -80,31 +79,65 @@
       <li class="nav-item">
         <a class="nav-link" href="{{ url('/home') }}">
           <i class="fas fa-fw fa-tachometer-alt"></i>
-          <span>Dashboard</span>
+          @if (Auth::user()->isAdmin() == 1)
+            <span>Admin Dashboard</span>
+          @else 
+            <span>{{ Auth::user()->name}} Dashboard</span>
+          @endif 
         </a>
       </li>
+      {{-- ---------------------------------For Admin Only------------------------------------- --}}
+      @if (Auth::user()->isAdmin() == 1)
+        
+          <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <i class="fas fa-plus"></i>
+                <span>Add/View Users</span>
+              </a>
+              <div class="dropdown-menu" aria-labelledby="pagesDropdown" style="background-color:#2c3237;">
+                <h6 class="dropdown-header" style="color:#d35400;">Actions</h6>
+              <a class="dropdown-item" href="{{ url('/admin/addusers') }}" style=" color:#f39c12;"><i class="fas fa-user-plus"></i><span>Add Users</span></a>
+              <a class="dropdown-item" href="{{ url('admin/actions/create') }}" style=" color:#f39c12;"><i class="fas fa-street-view"></i><span>View Users</span></a>
+                 
+          </li>
+          <li class="nav-item">
+              <a class="nav-link" href="{{url('admin/allstocks') }}">
+                <i class="fas fa-eye"></i>
+                <span>View AllStocks</span></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">
+                  <i class="fas fa-chart-line"></i>
+                <span>Reports</span></a>
+            </li>
+              
+      {{---------------------------- MyPortfolio ---------------------------------------}}
+      @else
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          <i class="fas fa-fw fa-folder"></i>
+            <i class="fas fa-users"></i>
           <span>MyPortfolio</span>
         </a>
         <div class="dropdown-menu" aria-labelledby="pagesDropdown" style="background-color:#2c3237;">
           <h6 class="dropdown-header" style="color:#d35400;">Actions</h6>
         <a class="dropdown-item" href="{{ url('/addstocks') }}" style=" color:#f39c12;">Add Stocks</a>
-        <a class="dropdown-item" href="{{ url('/dashboard') }}" style=" color:#f39c12;">View Stocks</a>
-          
-          
+        <a class="dropdown-item" href="{{ url('/dashboard') }}" style=" color:#f39c12;">View Stocks</a>    
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="{{url("/history") }}">
-          <i class="fas fa-fw fa-history"></i>
-          <span>Stocks History</span></a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="tables.html">
-          <i class="fas fa-fw fa-sort-amount-up-alt"></i>
-          <span>Reports</span></a>
-      </li>
+          <a class="nav-link" href="{{url("/history") }}">
+            <i class="fas fa-fw fa-history"></i>
+            <span>Stocks History</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="tables.html">
+              <i class="fas fa-chart-line"></i>
+            <span>Reports</span></a>
+        </li>
+          
+      @endif
+      {{-- ---------------------------------------------------------------------------- --}}
+
+      
     </ul>
 
     <div id="content-wrapper">
@@ -157,34 +190,7 @@
 
   <!-- Custom scripts for all pages-->
   <script src="{{ asset('js/sb-admin.min.js') }}"></script>
-  <script>
-        let myChart = document.getElementById('myChart').getContext('2d');
-
-        let lineChart = new Chart(myChart, {
-          type:'line',
-          data:{
-                labels:['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-                datasets:[{
-                  label:'Total Profits',
-                  data:[
-                  120,
-                  110,
-                  20,
-                  200,
-                  1000,
-                  50,
-                  200,
-                  300,
-                  500,
-                  900,
-                  100,
-                  600,
-                ],
-                  background-color:'#e74c3c',
-                }]
-          },
-        });
-  </script>
+ 
 </body>
 
 </html>

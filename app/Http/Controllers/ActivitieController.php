@@ -17,12 +17,15 @@ class ActivitieController extends Controller
      */
     public function index()
     {
-        $id = Auth::id();
-        $activity = Activitie::all();
-        $admin = Admin::all()->where('id',$id);
-        if(!empty($admin)){
-            return view('activity')->compact('activity');
-        }
+        
+        
+        
+        // $id = Auth::id();
+        // $activity = Activitie::all();
+        // $admin = Admin::all()->where('id',$id);
+        // if(!empty($admin)){
+        //     return view('activity')->compact('activity');
+        // }
     }
 
     /**

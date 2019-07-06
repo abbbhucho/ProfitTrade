@@ -46,7 +46,7 @@ class StockDetails extends Migration
             $table->double('sell_gst_total',21,10)->nullable();
             $table->double('sell_tc_total',21,10)->nullable();
             $table->double('sell_net_total',21,10)->nullable();
-
+            $table->double('profit',21,10)->nullable();
             $table->integer('duration')->nullable();
             $table->timestamps();
         });

@@ -4,8 +4,8 @@
 
 <div class="jumbotron">
         
-        <h2>Stock History</h2>
-        <p>The Stock History shows all the details of the particular user:</p>                        
+        <h2>View All Stocks</h2>
+        <p>All the Stocks which are fulfilled : </p>                        
 </div>
 <div class="container">
     <div class="row">
@@ -93,5 +93,4 @@
                     </div>     
         </div>
     </div>
-    @endsection
-    
+@endsection

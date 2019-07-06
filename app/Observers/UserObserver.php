@@ -4,6 +4,7 @@ namespace App\Observers;
 use Auth;
 use App\User;
 use App\Activitie;
+use Illuminate\Http\Request;
 class UserObserver
 {
     /**
@@ -18,15 +19,24 @@ class UserObserver
             // Data was just created
             $action = 'new account created';
             if (Auth::check()) {
-                Activitie::create([
-                    'user_id'      => Auth::user()->id,
-                    'description'  => $action,
-                    'id'    => $user->id
-                 ]);
+                
+                /**----------To check if admin or the user has created account--------- */
+                if(Auth::id() == $user->id){
+                    $id = Auth::user()->id;
+                }
+                else{
+                    $id = $user->id;
+                }
+                /*--------------------------------------------------------------------- */
+                $activity = new Activitie;
+                
+                $activity->user_id = Auth::user()->id;
+                $activity->description =  $id.",".$action.",".$_SERVER['REMOTE_ADDR']; 
+                $activity->save();
             }
         }
     }
-
+   
     /**
      * Handle the user "updated" event.
      *

@@ -42,9 +42,9 @@
                     
                     
                     <td><p data-placement="top" data-toggle="tooltip" title="View"><a href="#" class="show-modal btn btn-info btn-xs" data-toggle="modal" data-target="#viewModal{{$view->id}}"><i class="fas fa-eye"></i></a></td>
-                    <td><p data-placement="top" data-toggle="tooltip" title="Edit"><a href="#" class="edit-modal btn btn-primary btn-xs" data-id="{{$view->id}}" data-toggle="modal" data-target="#editModal{{$view->id}}"><i class="fas fa-edit"></i></a></td>
-                    <td><p data-placement="top" data-toggle="tooltip" title="Sell"><a href="#" class="edit-modal btn btn-warning btn-xs" data-id="{{$view->id}}" data-toggle="modal" data-target="#sellModal{{$view->id}}"><i class="fas fa-dollar-sign"></a></td>
-                    <td><p data-placement="top" data-toggle="tooltip" title="Delete"><a href="#" class="show-modal btn btn-danger btn-xs" data-id="{{$view->id}}" data-toggle="modal" data-target="#deleteModal{{$view->id}}"><i class="fas fa-trash"></i></a></td>
+                    <td><p data-placement="top" data-toggle="tooltip" title="Edit"><a href="#" class="edit-modal btn btn-primary btn-xs" data-id="{{$view->id}}" data-toggle="modal" data-target="#editModal{{$view->id}}"><i class="fas fa-edit"></i></a></p></td>
+                    <td><p data-placement="top" data-toggle="tooltip" title="Sell"><a href="#" class="edit-modal btn btn-warning btn-xs" data-id="{{$view->id}}" data-toggle="modal" data-target="#sellModal{{$view->id}}"><i class="fas fa-dollar-sign"></a></p></td>
+                    <td><p data-placement="top" data-toggle="tooltip" title="Delete"><a href="#" class="show-modal btn btn-danger btn-xs" data-id="{{$view->id}}" data-toggle="modal" data-target="#deleteModal{{$view->id}}"><i class="fas fa-trash"></i></a></p></td>
         </div>
 	</div>
 </div>
@@ -228,11 +228,7 @@
                 <div class="modal-body">       
                     <div class="alert alert-danger"><i class="fas fa-exclamation fa-2x"></i> Are you sure you want to delete this Record?</div>       
                     <span class="hidden id"></span>
-                    
-
-                   
-                    
-                
+              
                 </div>
                 <div class="modal-footer ">
                     <input type="submit" class="btn btn-danger" value="YES"> 
