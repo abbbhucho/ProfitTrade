@@ -18,19 +18,15 @@ class Stock_detailController extends Controller
      */
     public function index()
     {
-        //return view('user.dashboard');
         $current_time = strtotime(Carbon::now());
         $views = Stock_detail::all()->where('user_id',Auth::user()->id)->where('fulfilled',0);
-        // dd($views);
         return view('user.viewstocks',compact('views','current_time'));
     }
     public function history()
     {
-        //return view('user.history');
         $fulfilled=1;
            
             $stocks = Stock_detail::all()->where('user_id',Auth::user()->id);
-            // dd(Auth::user()->id); 
             if(count($stocks)>0){
                 $flags = 1;
                 
@@ -49,15 +45,6 @@ class Stock_detailController extends Controller
     public function store(Request $request)
     {
         $usr = Auth::user();
-        //$sdtime = Stock_detail::all()->where('user_id',Auth::user()->id);
-        //dd($sdtime[0]->created_at->toTimeString());
-
-        // $createdtime = $sdtime->created_at;
-        // $current_time = Carbon::now();
-        // echo $current_time->diffInHours($createdtime);
-        
-        //dd($price[0]->buy_trans_charges);
-        //$price
         
        //------------------------------------------Request Variables----------------------------------------------------
         $stock_name = $request['stock_name'];
@@ -91,8 +78,7 @@ class Stock_detailController extends Controller
         else{
                 //buy_stock_price < sell_stock_price
         }
-        //dd($fulfilled);
-      
+        
         //----------------------------------------Figure out NSE or BSE--------------------------------------------------------------------------------------
         $stockdetail->nse_or_bse = $nse_or_bse;
         //for NSE  
@@ -104,15 +90,12 @@ class Stock_detailController extends Controller
             $stockdetail->buy_gross_total =  $this->cal_buy_gross_total($buy_stock_price, $buy_stock_quantity);
             $stockdetail->buy_tc_total =  $this->cal_buy_tc_total($buy_stock_price,$buy_stock_quantity,$price[0]->buy_trans_charges);        
             $stockdetail->buy_b_total = $this->cal_buy_b_total($buy_stock_price,$price[0]->buy_b_percent);
-            // dd($stockdetail->buy_b_total);
             $stockdetail->buy_gst_total = $this->cal_buy_gst_total($buy_stock_price,$price[0]->buy_b_percent,$price[0]->buy_trans_charges,$price[0]->buy_gst_percent);
             $stockdetail->buy_stt_total = $this->cal_buy_stt_total($buy_gross_total,$price[0]->del_buy_stt_percent,$price[0]->intra_buy_stt_percent,$sell_stock_quantity,$sell_stock_price);
             $stockdetail->buy_sd_total = $this->cal_buy_sd_total($buy_gross_total,$price[0]->del_buy_sd_percent,$price[0]->intra_buy_sd_percent,$sell_stock_quantity,$sell_stock_price);
             $stockdetail->buy_net_total =($buy_gross_total)+($this->cal_buy_tc_total($buy_stock_price,$buy_stock_quantity,$price[0]->buy_trans_charges))+($this->cal_buy_b_total($buy_stock_price,$price[0]->buy_b_percent))+($this->cal_buy_gst_total($buy_stock_price,$price[0]->buy_b_percent,$price[0]->buy_trans_charges,$price[0]->buy_gst_percent))+($this->cal_buy_stt_total($buy_gross_total,$price[0]->del_buy_stt_percent,$price[0]->intra_buy_stt_percent,$sell_stock_quantity,$sell_stock_price))+($this->cal_buy_sd_total($buy_gross_total,$price[0]->del_buy_sd_percent,$price[0]->intra_buy_sd_percent,$sell_stock_quantity,$sell_stock_price));
         
-            // //dd($stockdetail);
-                // $stockdetail->save();
-            // //----------------------------------------Calculations related to sell--------------------------------------------------------------------------------------       $sell_stock_price = $request['sell_stock_price'];
+            //----------------------------------------Calculations related to sell--------------------------------------------------------------------------------------       $sell_stock_price = $request['sell_stock_price'];
             $sell_gross_total = $this->cal_buy_gross_total($sell_stock_price, $sell_stock_quantity);
             
             $stockdetail->sell_gross_total = $this->cal_buy_gross_total($sell_stock_price,$sell_stock_quantity);
@@ -123,7 +106,6 @@ class Stock_detailController extends Controller
             $stockdetail->sell_sd_total = $this->cal_buy_sd_total($sell_gross_total,$price[0]->del_sell_sd_percent,$price[0]->intra_sell_sd_percent,$sell_stock_quantity,$sell_stock_price);
             $stockdetail->sell_net_total = $sell_gross_total+($this->cal_buy_tc_total($sell_stock_price,$sell_stock_quantity,$price[0]->sell_trans_charges))+($this->cal_buy_b_total($sell_stock_price,$price[0]->sell_b_percent))+($this->cal_buy_gst_total($sell_stock_price,$price[0]->sell_b_percent,$price[0]->sell_trans_charges,$price[0]->sell_gst_percent))+($this->cal_buy_stt_total($sell_gross_total,$price[0]->del_sell_stt_percent,$price[0]->intra_sell_stt_percent,$sell_stock_quantity,$sell_stock_price))+($this->cal_buy_sd_total($sell_gross_total,$price[0]->del_sell_sd_percent,$price[0]->intra_sell_sd_percent,$sell_stock_quantity,$sell_stock_price));
             $stockdetail->profit = $sell_gross_total+($this->cal_buy_tc_total($sell_stock_price,$sell_stock_quantity,$price[0]->sell_trans_charges))+($this->cal_buy_b_total($sell_stock_price,$price[0]->sell_b_percent))+($this->cal_buy_gst_total($sell_stock_price,$price[0]->sell_b_percent,$price[0]->sell_trans_charges,$price[0]->sell_gst_percent))+($this->cal_buy_stt_total($sell_gross_total,$price[0]->del_sell_stt_percent,$price[0]->intra_sell_stt_percent,$sell_stock_quantity,$sell_stock_price))+($this->cal_buy_sd_total($sell_gross_total,$price[0]->del_sell_sd_percent,$price[0]->intra_sell_sd_percent,$sell_stock_quantity,$sell_stock_price)) - ($buy_gross_total)+($this->cal_buy_tc_total($buy_stock_price,$buy_stock_quantity,$price[0]->buy_trans_charges))+($this->cal_buy_b_total($buy_stock_price,$price[0]->buy_b_percent))+($this->cal_buy_gst_total($buy_stock_price,$price[0]->buy_b_percent,$price[0]->buy_trans_charges,$price[0]->buy_gst_percent))+($this->cal_buy_stt_total($buy_gross_total,$price[0]->del_buy_stt_percent,$price[0]->intra_buy_stt_percent,$sell_stock_quantity,$sell_stock_price))+($this->cal_buy_sd_total($buy_gross_total,$price[0]->del_buy_sd_percent,$price[0]->intra_buy_sd_percent,$sell_stock_quantity,$sell_stock_price));
-            //dd($stockdetail);
             $stockdetail->save();
             
             
@@ -157,9 +139,6 @@ class Stock_detailController extends Controller
             $id = 2;
             $price = Charge::all()->where('id',2);
             
-            //dd(gettype($request['exampleRadios']));
-            
-            // dd($price);
             //----------------------------------------Calculations related to buy--------------------------------------------------------------------------------------
             $buy_gross_total = $this->cal_buy_gross_total($buy_stock_price, $buy_stock_quantity);            
             $stockdetail->buy_gross_total =  $this->cal_buy_gross_total($buy_stock_price, $buy_stock_quantity);
@@ -171,9 +150,7 @@ class Stock_detailController extends Controller
             $stockdetail->buy_sd_total = $this->cal_buy_sd_total($buy_gross_total,$price[1]->del_buy_sd_percent,$price[1]->intra_buy_sd_percent,$sell_stock_quantity,$sell_stock_price);
             $stockdetail->buy_net_total =($buy_gross_total)+($this->cal_buy_tc_total($buy_stock_price,$buy_stock_quantity,$price[1]->buy_trans_charges))+($this->cal_buy_b_total($buy_stock_price,$price[1]->buy_b_percent))+($this->cal_buy_gst_total($buy_stock_price,$price[1]->buy_b_percent,$price[1]->buy_trans_charges,$price[1]->buy_gst_percent))+($this->cal_buy_stt_total($buy_gross_total,$price[1]->del_buy_stt_percent,$price[1]->intra_buy_stt_percent,$sell_stock_quantity,$sell_stock_price))+($this->cal_buy_sd_total($buy_gross_total,$price[1]->del_buy_sd_percent,$price[1]->intra_buy_sd_percent,$sell_stock_quantity,$sell_stock_price));
         
-            // //dd($stockdetail);
-                // $stockdetail->save();
-            // //----------------------------------------Calculations related to sell--------------------------------------------------------------------------------------       $sell_stock_price = $request['sell_stock_price'];
+            //----------------------------------------Calculations related to sell--------------------------------------------------------------------------------------       $sell_stock_price = $request['sell_stock_price'];
             $sell_gross_total = $this->cal_buy_gross_total($sell_stock_price, $sell_stock_quantity);
             
             $stockdetail->sell_gross_total = $this->cal_buy_gross_total($sell_stock_price,$sell_stock_quantity);
@@ -185,7 +162,6 @@ class Stock_detailController extends Controller
             $stockdetail->sell_net_total = $sell_gross_total+($this->cal_buy_tc_total($sell_stock_price,$sell_stock_quantity,$price[1]->sell_trans_charges))+($this->cal_buy_b_total($sell_stock_price,$price[1]->sell_b_percent))+($this->cal_buy_gst_total($sell_stock_price,$price[1]->sell_b_percent,$price[1]->sell_trans_charges,$price[1]->sell_gst_percent))+($this->cal_buy_stt_total($sell_gross_total,$price[1]->del_sell_stt_percent,$price[1]->intra_sell_stt_percent,$sell_stock_quantity,$sell_stock_price))+($this->cal_buy_sd_total($sell_gross_total,$price[1]->del_sell_sd_percent,$price[1]->intra_sell_sd_percent,$sell_stock_quantity,$sell_stock_price));
             $stockdetail->profit = $sell_gross_total+($this->cal_buy_tc_total($sell_stock_price,$sell_stock_quantity,$price[1]->sell_trans_charges))+($this->cal_buy_b_total($sell_stock_price,$price[1]->sell_b_percent))+($this->cal_buy_gst_total($sell_stock_price,$price[1]->sell_b_percent,$price[1]->sell_trans_charges,$price[1]->sell_gst_percent))+($this->cal_buy_stt_total($sell_gross_total,$price[1]->del_sell_stt_percent,$price[1]->intra_sell_stt_percent,$sell_stock_quantity,$sell_stock_price))+($this->cal_buy_sd_total($sell_gross_total,$price[1]->del_sell_sd_percent,$price[1]->intra_sell_sd_percent,$sell_stock_quantity,$sell_stock_price)) - ($buy_gross_total)+($this->cal_buy_tc_total($buy_stock_price,$buy_stock_quantity,$price[1]->buy_trans_charges))+($this->cal_buy_b_total($buy_stock_price,$price[1]->buy_b_percent))+($this->cal_buy_gst_total($buy_stock_price,$price[1]->buy_b_percent,$price[1]->buy_trans_charges,$price[1]->buy_gst_percent))+($this->cal_buy_stt_total($buy_gross_total,$price[1]->del_buy_stt_percent,$price[1]->intra_buy_stt_percent,$sell_stock_quantity,$sell_stock_price))+($this->cal_buy_sd_total($buy_gross_total,$price[1]->del_buy_sd_percent,$price[1]->intra_buy_sd_percent,$sell_stock_quantity,$sell_stock_price));
             
-            //dd($stockdetail);
             $stockdetail->save();
             
             
@@ -213,13 +189,10 @@ class Stock_detailController extends Controller
             $stockdetail_2->save();
 
             return redirect('dashboard/');
-           // dd($stockdetail_2);
+          
           }
         }
         
-     
-       
-        //print_r($request);
         
     }
     protected function cal_buy_gross_total($var1, $var2){
@@ -273,20 +246,7 @@ class Stock_detailController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show($id){
-
-        $sd = Stock_detail::all()->where('user_id',Auth::user()->id)->where('fulfilled',0)->where('id',$id);
-        $current_time = strtotime(Carbon::now());
-        $created_time = strtotime($sd->created_at);
-                $minutes = round(abs($to_time - $from_time) / 60,2). " minute";
-                if($minutes < 60){ 
-                     return round($minutes,0);
-                    }
-                elseif($minutes <24*60){
-                     return round(($minutes/60),0)." hours ago";
-                    }
-                else{
-                     return round(($minutes/1440),0)." day ago";
-                    }  
+  
         }
        
     /**
@@ -301,8 +261,154 @@ class Stock_detailController extends Controller
      */
     public function sell(Request $request, $id){
        
+       
+        
         $sell = Stock_detail::find($id);
-        dd($sell);
+        
+        $stock_name = $sell->stock_name;
+        $buy_stock_quantity = $sell->buy_quantity;
+        $buy_stock_price =  $sell->buy_price;
+        $sell_stock_quantity = $request['sell_stock_quantity'];
+        $sell_stock_price =  $request['sell_price'];
+        $nse_or_bse = $sell->nse_or_bse;
+        $buy_gross_total = $this->cal_buy_gross_total($buy_stock_price, $buy_stock_quantity);  
+        if($buy_stock_quantity > $sell_stock_quantity){
+            // ------------------------for NSE---------------------------------------------
+            if($nse_or_bse == '0'){
+                $sell->sell_price = $sell_stock_price;
+                $sell->sell_quantity = $sell_stock_quantity;
+                $sell->fulfilled = 1;
+                $price = Charge::all()->where('id',1);
+                /**------------Calculations related to sell------------------------------------- */
+                $sell_gross_total = $this->cal_buy_gross_total($sell_stock_price, $sell_stock_quantity);
+                
+                $sell->sell_gross_total = $this->cal_buy_gross_total($sell_stock_price,$sell_stock_quantity);
+                $sell->sell_tc_total = $this->cal_buy_tc_total($sell_stock_price,$sell_stock_quantity,$price[0]->sell_trans_charges); 
+                $sell->sell_b_total = $this->cal_buy_b_total($sell_stock_price,$price[0]->sell_b_percent);
+                $sell->sell_gst_total = $this->cal_buy_gst_total($sell_stock_price,$price[0]->sell_b_percent,$price[0]->sell_trans_charges,$price[0]->sell_gst_percent);
+                $sell->sell_stt_total = $this->cal_buy_stt_total($sell_gross_total,$price[0]->del_sell_stt_percent,$price[0]->intra_sell_stt_percent,$sell_stock_quantity,$sell_stock_price);
+                $sell->sell_sd_total = $this->cal_buy_sd_total($sell_gross_total,$price[0]->del_sell_sd_percent,$price[0]->intra_sell_sd_percent,$sell_stock_quantity,$sell_stock_price);
+                $sell->sell_net_total = $sell_gross_total+($this->cal_buy_tc_total($sell_stock_price,$sell_stock_quantity,$price[0]->sell_trans_charges))+($this->cal_buy_b_total($sell_stock_price,$price[0]->sell_b_percent))+($this->cal_buy_gst_total($sell_stock_price,$price[0]->sell_b_percent,$price[0]->sell_trans_charges,$price[0]->sell_gst_percent))+($this->cal_buy_stt_total($sell_gross_total,$price[0]->del_sell_stt_percent,$price[0]->intra_sell_stt_percent,$sell_stock_quantity,$sell_stock_price))+($this->cal_buy_sd_total($sell_gross_total,$price[0]->del_sell_sd_percent,$price[0]->intra_sell_sd_percent,$sell_stock_quantity,$sell_stock_price));
+                $sell->profit = $sell_gross_total+($this->cal_buy_tc_total($sell_stock_price,$sell_stock_quantity,$price[0]->sell_trans_charges))+($this->cal_buy_b_total($sell_stock_price,$price[0]->sell_b_percent))+($this->cal_buy_gst_total($sell_stock_price,$price[0]->sell_b_percent,$price[0]->sell_trans_charges,$price[0]->sell_gst_percent))+($this->cal_buy_stt_total($sell_gross_total,$price[0]->del_sell_stt_percent,$price[0]->intra_sell_stt_percent,$sell_stock_quantity,$sell_stock_price))+($this->cal_buy_sd_total($sell_gross_total,$price[0]->del_sell_sd_percent,$price[0]->intra_sell_sd_percent,$sell_stock_quantity,$sell_stock_price)) - ($buy_gross_total)+($this->cal_buy_tc_total($buy_stock_price,$buy_stock_quantity,$price[0]->buy_trans_charges))+($this->cal_buy_b_total($buy_stock_price,$price[0]->buy_b_percent))+($this->cal_buy_gst_total($buy_stock_price,$price[0]->buy_b_percent,$price[0]->buy_trans_charges,$price[0]->buy_gst_percent))+($this->cal_buy_stt_total($buy_gross_total,$price[0]->del_buy_stt_percent,$price[0]->intra_buy_stt_percent,$sell_stock_quantity,$sell_stock_price))+($this->cal_buy_sd_total($buy_gross_total,$price[0]->del_buy_sd_percent,$price[0]->intra_buy_sd_percent,$sell_stock_quantity,$sell_stock_price));
+                $sell->save();
+                
+                //---------------------------------------Record a new data for the left stocks------------------------------
+                $stockdetail = new Stock_detail;
+                $stockdetail->stock_name = $stock_name;
+                $stockdetail->buy_quantity = $buy_stock_quantity - $sell_stock_quantity;
+                $stockdetail->buy_price = $buy_stock_price;
+                $stockdetail->user_id = Auth::id();
+                $stockdetail->fulfilled = 0;
+                $stockdetail->sell_price = null;
+                $stockdetail->sell_quantity = null;
+                $stockdetail->nse_or_bse = $nse_or_bse;
+                //----------------------------------------Calculations related to buy--------------------------------------------------------------------------------------
+                $buy_gross_total = $this->cal_buy_gross_total($buy_stock_price, $buy_stock_quantity);            
+                $stockdetail->buy_gross_total =  $this->cal_buy_gross_total($buy_stock_price, $buy_stock_quantity);
+                $stockdetail->buy_tc_total =  $this->cal_buy_tc_total($buy_stock_price,$buy_stock_quantity,$price[0]->buy_trans_charges);        
+                $stockdetail->buy_b_total = $this->cal_buy_b_total($buy_stock_price,$price[0]->buy_b_percent);
+                $stockdetail->buy_gst_total = $this->cal_buy_gst_total($buy_stock_price,$price[0]->buy_b_percent,$price[0]->buy_trans_charges,$price[0]->buy_gst_percent);
+                $stockdetail->buy_stt_total = $this->cal_buy_stt_total($buy_gross_total,$price[0]->del_buy_stt_percent,$price[0]->intra_buy_stt_percent,$sell_stock_quantity,$sell_stock_price);
+                $stockdetail->buy_sd_total = $this->cal_buy_sd_total($buy_gross_total,$price[0]->del_buy_sd_percent,$price[0]->intra_buy_sd_percent,$sell_stock_quantity,$sell_stock_price);
+                $stockdetail->buy_net_total =($buy_gross_total)+($this->cal_buy_tc_total($buy_stock_price,$buy_stock_quantity,$price[0]->buy_trans_charges))+($this->cal_buy_b_total($buy_stock_price,$price[0]->buy_b_percent))+($this->cal_buy_gst_total($buy_stock_price,$price[0]->buy_b_percent,$price[0]->buy_trans_charges,$price[0]->buy_gst_percent))+($this->cal_buy_stt_total($buy_gross_total,$price[0]->del_buy_stt_percent,$price[0]->intra_buy_stt_percent,$sell_stock_quantity,$sell_stock_price))+($this->cal_buy_sd_total($buy_gross_total,$price[0]->del_buy_sd_percent,$price[0]->intra_buy_sd_percent,$sell_stock_quantity,$sell_stock_price));
+            
+                $stockdetail->save();
+                return back();
+
+            }
+            // ------------------------for BSE---------------------------------------------
+            else{
+                $sell->sell_price = $sell_stock_price;
+                $sell->sell_quantity = $sell_stock_quantity;
+                $sell->fulfilled = 1;
+                $price = Charge::all()->where('id',2);
+
+                /**------------Calculations related to sell------------------------------------- */
+                $sell_gross_total = $this->cal_buy_gross_total($sell_stock_price, $sell_stock_quantity);
+            
+                $stockdetail->sell_gross_total = $this->cal_buy_gross_total($sell_stock_price,$sell_stock_quantity);
+                $stockdetail->sell_tc_total = $this->cal_buy_tc_total($sell_stock_price,$sell_stock_quantity,$price[1]->sell_trans_charges); 
+                $stockdetail->sell_b_total = $this->cal_buy_b_total($sell_stock_price,$price[1]->sell_b_percent);
+                $stockdetail->sell_gst_total = $this->cal_buy_gst_total($sell_stock_price,$price[1]->sell_b_percent,$price[1]->sell_trans_charges,$price[1]->sell_gst_percent);
+                $stockdetail->sell_stt_total = $this->cal_buy_stt_total($sell_gross_total,$price[1]->del_sell_stt_percent,$price[1]->intra_sell_stt_percent,$sell_stock_quantity,$sell_stock_price);
+                $stockdetail->sell_sd_total = $this->cal_buy_sd_total($sell_gross_total,$price[1]->del_sell_sd_percent,$price[1]->intra_sell_sd_percent,$sell_stock_quantity,$sell_stock_price);
+                $stockdetail->sell_net_total = $sell_gross_total+($this->cal_buy_tc_total($sell_stock_price,$sell_stock_quantity,$price[1]->sell_trans_charges))+($this->cal_buy_b_total($sell_stock_price,$price[1]->sell_b_percent))+($this->cal_buy_gst_total($sell_stock_price,$price[1]->sell_b_percent,$price[1]->sell_trans_charges,$price[1]->sell_gst_percent))+($this->cal_buy_stt_total($sell_gross_total,$price[1]->del_sell_stt_percent,$price[1]->intra_sell_stt_percent,$sell_stock_quantity,$sell_stock_price))+($this->cal_buy_sd_total($sell_gross_total,$price[1]->del_sell_sd_percent,$price[1]->intra_sell_sd_percent,$sell_stock_quantity,$sell_stock_price));
+                $stockdetail->profit = $sell_gross_total+($this->cal_buy_tc_total($sell_stock_price,$sell_stock_quantity,$price[1]->sell_trans_charges))+($this->cal_buy_b_total($sell_stock_price,$price[1]->sell_b_percent))+($this->cal_buy_gst_total($sell_stock_price,$price[1]->sell_b_percent,$price[1]->sell_trans_charges,$price[1]->sell_gst_percent))+($this->cal_buy_stt_total($sell_gross_total,$price[1]->del_sell_stt_percent,$price[1]->intra_sell_stt_percent,$sell_stock_quantity,$sell_stock_price))+($this->cal_buy_sd_total($sell_gross_total,$price[1]->del_sell_sd_percent,$price[1]->intra_sell_sd_percent,$sell_stock_quantity,$sell_stock_price)) - ($buy_gross_total)+($this->cal_buy_tc_total($buy_stock_price,$buy_stock_quantity,$price[1]->buy_trans_charges))+($this->cal_buy_b_total($buy_stock_price,$price[1]->buy_b_percent))+($this->cal_buy_gst_total($buy_stock_price,$price[1]->buy_b_percent,$price[1]->buy_trans_charges,$price[1]->buy_gst_percent))+($this->cal_buy_stt_total($buy_gross_total,$price[1]->del_buy_stt_percent,$price[1]->intra_buy_stt_percent,$sell_stock_quantity,$sell_stock_price))+($this->cal_buy_sd_total($buy_gross_total,$price[1]->del_buy_sd_percent,$price[1]->intra_buy_sd_percent,$sell_stock_quantity,$sell_stock_price));
+                $sell->save();
+                //---------------------------------------Record a new data for the left stocks------------------------------
+                $stockdetail = new Stock_detail;
+                $stockdetail->stock_name = $stock_name;
+                $stockdetail->buy_quantity = $buy_stock_quantity - $sell_stock_quantity;
+                $stockdetail->buy_price = $buy_stock_price;
+                $stockdetail->user_id = Auth::id();
+                $stockdetail->fulfilled = 0;
+                $stockdetail->sell_price = null;
+                $stockdetail->sell_quantity = null;
+                $stockdetail->nse_or_bse = $nse_or_bse;
+                //----------------------------------------Calculations related to buy--------------------------------------------------------------------------------------
+                $buy_gross_total = $this->cal_buy_gross_total($buy_stock_price, $buy_stock_quantity);            
+                $stockdetail->buy_gross_total =  $this->cal_buy_gross_total($buy_stock_price, $buy_stock_quantity);
+                $stockdetail->buy_tc_total =  $this->cal_buy_tc_total($buy_stock_price,$buy_stock_quantity,$price[1]->buy_trans_charges);        
+                $stockdetail->buy_b_total = $this->cal_buy_b_total($buy_stock_price,$price[1]->buy_b_percent);
+                $stockdetail->buy_gst_total = $this->cal_buy_gst_total($buy_stock_price,$price[1]->buy_b_percent,$price[1]->buy_trans_charges,$price[1]->buy_gst_percent);
+                $stockdetail->buy_stt_total = $this->cal_buy_stt_total($buy_gross_total,$price[1]->del_buy_stt_percent,$price[1]->intra_buy_stt_percent,$sell_stock_quantity,$sell_stock_price);
+                $stockdetail->buy_sd_total = $this->cal_buy_sd_total($buy_gross_total,$price[1]->del_buy_sd_percent,$price[1]->intra_buy_sd_percent,$sell_stock_quantity,$sell_stock_price);
+                $stockdetail->buy_net_total =($buy_gross_total)+($this->cal_buy_tc_total($buy_stock_price,$buy_stock_quantity,$price[1]->buy_trans_charges))+($this->cal_buy_b_total($buy_stock_price,$price[1]->buy_b_percent))+($this->cal_buy_gst_total($buy_stock_price,$price[1]->buy_b_percent,$price[1]->buy_trans_charges,$price[1]->buy_gst_percent))+($this->cal_buy_stt_total($buy_gross_total,$price[1]->del_buy_stt_percent,$price[1]->intra_buy_stt_percent,$sell_stock_quantity,$sell_stock_price))+($this->cal_buy_sd_total($buy_gross_total,$price[1]->del_buy_sd_percent,$price[1]->intra_buy_sd_percent,$sell_stock_quantity,$sell_stock_price));
+            
+                $stockdetail->save();
+                return back();
+               
+            }
+        }
+        /*--------------------------------------all stocks are sold------------------------------------------------*/
+        elseif($buy_stock_quantity == $sell_stock_quantity){
+            
+            // ------------------------for NSE---------------------------------------------
+            if($nse_or_bse == '0'){
+                $sell->sell_price = $sell_stock_price;
+                $sell->sell_quantity = $sell_stock_quantity;
+                $sell->fulfilled = 1;
+                $price = Charge::all()->where('id',1);
+                /**------------Calculations related to sell------------------------------------- */
+                $sell_gross_total = $this->cal_buy_gross_total($sell_stock_price, $sell_stock_quantity);
+                
+                $sell->sell_gross_total = $this->cal_buy_gross_total($sell_stock_price,$sell_stock_quantity);
+                $sell->sell_tc_total = $this->cal_buy_tc_total($sell_stock_price,$sell_stock_quantity,$price[0]->sell_trans_charges); 
+                $sell->sell_b_total = $this->cal_buy_b_total($sell_stock_price,$price[0]->sell_b_percent);
+                $sell->sell_gst_total = $this->cal_buy_gst_total($sell_stock_price,$price[0]->sell_b_percent,$price[0]->sell_trans_charges,$price[0]->sell_gst_percent);
+                $sell->sell_stt_total = $this->cal_buy_stt_total($sell_gross_total,$price[0]->del_sell_stt_percent,$price[0]->intra_sell_stt_percent,$sell_stock_quantity,$sell_stock_price);
+                $sell->sell_sd_total = $this->cal_buy_sd_total($sell_gross_total,$price[0]->del_sell_sd_percent,$price[0]->intra_sell_sd_percent,$sell_stock_quantity,$sell_stock_price);
+                $sell->sell_net_total = $sell_gross_total+($this->cal_buy_tc_total($sell_stock_price,$sell_stock_quantity,$price[0]->sell_trans_charges))+($this->cal_buy_b_total($sell_stock_price,$price[0]->sell_b_percent))+($this->cal_buy_gst_total($sell_stock_price,$price[0]->sell_b_percent,$price[0]->sell_trans_charges,$price[0]->sell_gst_percent))+($this->cal_buy_stt_total($sell_gross_total,$price[0]->del_sell_stt_percent,$price[0]->intra_sell_stt_percent,$sell_stock_quantity,$sell_stock_price))+($this->cal_buy_sd_total($sell_gross_total,$price[0]->del_sell_sd_percent,$price[0]->intra_sell_sd_percent,$sell_stock_quantity,$sell_stock_price));
+                $sell->profit = $sell_gross_total+($this->cal_buy_tc_total($sell_stock_price,$sell_stock_quantity,$price[0]->sell_trans_charges))+($this->cal_buy_b_total($sell_stock_price,$price[0]->sell_b_percent))+($this->cal_buy_gst_total($sell_stock_price,$price[0]->sell_b_percent,$price[0]->sell_trans_charges,$price[0]->sell_gst_percent))+($this->cal_buy_stt_total($sell_gross_total,$price[0]->del_sell_stt_percent,$price[0]->intra_sell_stt_percent,$sell_stock_quantity,$sell_stock_price))+($this->cal_buy_sd_total($sell_gross_total,$price[0]->del_sell_sd_percent,$price[0]->intra_sell_sd_percent,$sell_stock_quantity,$sell_stock_price)) - ($buy_gross_total)+($this->cal_buy_tc_total($buy_stock_price,$buy_stock_quantity,$price[0]->buy_trans_charges))+($this->cal_buy_b_total($buy_stock_price,$price[0]->buy_b_percent))+($this->cal_buy_gst_total($buy_stock_price,$price[0]->buy_b_percent,$price[0]->buy_trans_charges,$price[0]->buy_gst_percent))+($this->cal_buy_stt_total($buy_gross_total,$price[0]->del_buy_stt_percent,$price[0]->intra_buy_stt_percent,$sell_stock_quantity,$sell_stock_price))+($this->cal_buy_sd_total($buy_gross_total,$price[0]->del_buy_sd_percent,$price[0]->intra_buy_sd_percent,$sell_stock_quantity,$sell_stock_price));
+                $sell->save();
+                return back();
+            }
+            // ------------------------for BSE---------------------------------------------
+            else{
+                $sell->sell_price = $sell_stock_price;
+                $sell->sell_quantity = $sell_stock_quantity;
+                $sell->fulfilled = 1;
+                $price = Charge::all()->where('id',2);
+
+                /**------------Calculations related to sell------------------------------------- */
+                $sell_gross_total = $this->cal_buy_gross_total($sell_stock_price, $sell_stock_quantity);
+            
+                $stockdetail->sell_gross_total = $this->cal_buy_gross_total($sell_stock_price,$sell_stock_quantity);
+                $stockdetail->sell_tc_total = $this->cal_buy_tc_total($sell_stock_price,$sell_stock_quantity,$price[1]->sell_trans_charges); 
+                $stockdetail->sell_b_total = $this->cal_buy_b_total($sell_stock_price,$price[1]->sell_b_percent);
+                $stockdetail->sell_gst_total = $this->cal_buy_gst_total($sell_stock_price,$price[1]->sell_b_percent,$price[1]->sell_trans_charges,$price[1]->sell_gst_percent);
+                $stockdetail->sell_stt_total = $this->cal_buy_stt_total($sell_gross_total,$price[1]->del_sell_stt_percent,$price[1]->intra_sell_stt_percent,$sell_stock_quantity,$sell_stock_price);
+                $stockdetail->sell_sd_total = $this->cal_buy_sd_total($sell_gross_total,$price[1]->del_sell_sd_percent,$price[1]->intra_sell_sd_percent,$sell_stock_quantity,$sell_stock_price);
+                $stockdetail->sell_net_total = $sell_gross_total+($this->cal_buy_tc_total($sell_stock_price,$sell_stock_quantity,$price[1]->sell_trans_charges))+($this->cal_buy_b_total($sell_stock_price,$price[1]->sell_b_percent))+($this->cal_buy_gst_total($sell_stock_price,$price[1]->sell_b_percent,$price[1]->sell_trans_charges,$price[1]->sell_gst_percent))+($this->cal_buy_stt_total($sell_gross_total,$price[1]->del_sell_stt_percent,$price[1]->intra_sell_stt_percent,$sell_stock_quantity,$sell_stock_price))+($this->cal_buy_sd_total($sell_gross_total,$price[1]->del_sell_sd_percent,$price[1]->intra_sell_sd_percent,$sell_stock_quantity,$sell_stock_price));
+                $stockdetail->profit = $sell_gross_total+($this->cal_buy_tc_total($sell_stock_price,$sell_stock_quantity,$price[1]->sell_trans_charges))+($this->cal_buy_b_total($sell_stock_price,$price[1]->sell_b_percent))+($this->cal_buy_gst_total($sell_stock_price,$price[1]->sell_b_percent,$price[1]->sell_trans_charges,$price[1]->sell_gst_percent))+($this->cal_buy_stt_total($sell_gross_total,$price[1]->del_sell_stt_percent,$price[1]->intra_sell_stt_percent,$sell_stock_quantity,$sell_stock_price))+($this->cal_buy_sd_total($sell_gross_total,$price[1]->del_sell_sd_percent,$price[1]->intra_sell_sd_percent,$sell_stock_quantity,$sell_stock_price)) - ($buy_gross_total)+($this->cal_buy_tc_total($buy_stock_price,$buy_stock_quantity,$price[1]->buy_trans_charges))+($this->cal_buy_b_total($buy_stock_price,$price[1]->buy_b_percent))+($this->cal_buy_gst_total($buy_stock_price,$price[1]->buy_b_percent,$price[1]->buy_trans_charges,$price[1]->buy_gst_percent))+($this->cal_buy_stt_total($buy_gross_total,$price[1]->del_buy_stt_percent,$price[1]->intra_buy_stt_percent,$sell_stock_quantity,$sell_stock_price))+($this->cal_buy_sd_total($buy_gross_total,$price[1]->del_buy_sd_percent,$price[1]->intra_buy_sd_percent,$sell_stock_quantity,$sell_stock_price));
+                $sell->save();
+                return back();
+            }
+             
+        } 
+        else{
+                //negative sell stocks sell quantity is more than buy quantity
+        }
     }
    
     /**
@@ -314,17 +420,8 @@ class Stock_detailController extends Controller
      */
     public function update(Request $request, $id)
     {
-        // dd($request);
         $usr = Auth::user();
-        //$sdtime = Stock_detail::all()->where('user_id',Auth::user()->id);
-        //dd($sdtime[0]->created_at->toTimeString());
-
-        // $createdtime = $sdtime->created_at;
-        // $current_time = Carbon::now();
-        // echo $current_time->diffInHours($createdtime);
         
-        //dd($price[0]->buy_trans_charges);
-        //$price
         
        //------------------------------------------Request Variables----------------------------------------------------
         
@@ -340,16 +437,13 @@ class Stock_detailController extends Controller
         // ----------------------------------------Input values--------------------------------------------------------------------------------------
    
         $stockdetail = Stock_detail::find($id);
-        // dd($stockdetail);
-        
-        //dd($stock_detail);
         $stockdetail->stock_name  = $stock_name;
         $stockdetail->buy_quantity = $buy_stock_quantity;
         $stockdetail->buy_price = $buy_stock_price;
         $stockdetail->sell_quantity = $sell_stock_quantity;
         $stockdetail->sell_price = $sell_stock_price;
         $stockdetail->user_id = $user_id;
-        $stockdetail->fulfilled = 1;//fulfilled -> 1 specify not fulfilled
+        $stockdetail->fulfilled = 1;
         // ----------------------------------------Condition to check fulfilled stock or not--------------------------------------------------------------------------------------
         $fulfilled = 1;
         if($buy_stock_quantity > $sell_stock_quantity)
@@ -377,15 +471,12 @@ class Stock_detailController extends Controller
             $stockdetail->buy_gross_total =  $this->cal_buy_gross_total($buy_stock_price, $buy_stock_quantity);
             $stockdetail->buy_tc_total =  $this->cal_buy_tc_total($buy_stock_price,$buy_stock_quantity,$price[0]->buy_trans_charges);        
             $stockdetail->buy_b_total = $this->cal_buy_b_total($buy_stock_price,$price[0]->buy_b_percent);
-            // dd($stockdetail->buy_b_total);
             $stockdetail->buy_gst_total = $this->cal_buy_gst_total($buy_stock_price,$price[0]->buy_b_percent,$price[0]->buy_trans_charges,$price[0]->buy_gst_percent);
             $stockdetail->buy_stt_total = $this->cal_buy_stt_total($buy_gross_total,$price[0]->del_buy_stt_percent,$price[0]->intra_buy_stt_percent,$sell_stock_quantity,$sell_stock_price);
             $stockdetail->buy_sd_total = $this->cal_buy_sd_total($buy_gross_total,$price[0]->del_buy_sd_percent,$price[0]->intra_buy_sd_percent,$sell_stock_quantity,$sell_stock_price);
             $stockdetail->buy_net_total =($buy_gross_total)+($this->cal_buy_tc_total($buy_stock_price,$buy_stock_quantity,$price[0]->buy_trans_charges))+($this->cal_buy_b_total($buy_stock_price,$price[0]->buy_b_percent))+($this->cal_buy_gst_total($buy_stock_price,$price[0]->buy_b_percent,$price[0]->buy_trans_charges,$price[0]->buy_gst_percent))+($this->cal_buy_stt_total($buy_gross_total,$price[0]->del_buy_stt_percent,$price[0]->intra_buy_stt_percent,$sell_stock_quantity,$sell_stock_price))+($this->cal_buy_sd_total($buy_gross_total,$price[0]->del_buy_sd_percent,$price[0]->intra_buy_sd_percent,$sell_stock_quantity,$sell_stock_price));
         
-            // //dd($stockdetail);
-                // $stockdetail->save();
-            // //----------------------------------------Calculations related to sell--------------------------------------------------------------------------------------       $sell_stock_price = $request['sell_stock_price'];
+            //----------------------------------------Calculations related to sell--------------------------------------------------------------------------------------       $sell_stock_price = $request['sell_stock_price'];
             $sell_gross_total = $this->cal_buy_gross_total($sell_stock_price, $sell_stock_quantity);
             
             $stockdetail->sell_gross_total = $this->cal_buy_gross_total($sell_stock_price,$sell_stock_quantity);
@@ -395,10 +486,7 @@ class Stock_detailController extends Controller
             $stockdetail->sell_stt_total = $this->cal_buy_stt_total($sell_gross_total,$price[0]->del_sell_stt_percent,$price[0]->intra_sell_stt_percent,$sell_stock_quantity,$sell_stock_price);
             $stockdetail->sell_sd_total = $this->cal_buy_sd_total($sell_gross_total,$price[0]->del_sell_sd_percent,$price[0]->intra_sell_sd_percent,$sell_stock_quantity,$sell_stock_price);
             $stockdetail->sell_net_total = $sell_gross_total+($this->cal_buy_tc_total($sell_stock_price,$sell_stock_quantity,$price[0]->sell_trans_charges))+($this->cal_buy_b_total($sell_stock_price,$price[0]->sell_b_percent))+($this->cal_buy_gst_total($sell_stock_price,$price[0]->sell_b_percent,$price[0]->sell_trans_charges,$price[0]->sell_gst_percent))+($this->cal_buy_stt_total($sell_gross_total,$price[0]->del_sell_stt_percent,$price[0]->intra_sell_stt_percent,$sell_stock_quantity,$sell_stock_price))+($this->cal_buy_sd_total($sell_gross_total,$price[0]->del_sell_sd_percent,$price[0]->intra_sell_sd_percent,$sell_stock_quantity,$sell_stock_price));
-            //dd($stockdetail);
             $stockdetail->save();
-            
-            
             
         }
         else
@@ -406,23 +494,17 @@ class Stock_detailController extends Controller
             $charges_id = 2;
             $price = Charge::all()->where('id',2);
             
-            //dd(gettype($request['exampleRadios']));
-            
-            // dd($price);
             //----------------------------------------Calculations related to buy--------------------------------------------------------------------------------------
             $buy_gross_total = $this->cal_buy_gross_total($buy_stock_price, $buy_stock_quantity);            
             $stockdetail->buy_gross_total =  $this->cal_buy_gross_total($buy_stock_price, $buy_stock_quantity);
             $stockdetail->buy_tc_total =  $this->cal_buy_tc_total($buy_stock_price,$buy_stock_quantity,$price[1]->buy_trans_charges);        
             $stockdetail->buy_b_total = $this->cal_buy_b_total($buy_stock_price,$price[1]->buy_b_percent);
-            // dd($stockdetail->buy_b_total);
             $stockdetail->buy_gst_total = $this->cal_buy_gst_total($buy_stock_price,$price[1]->buy_b_percent,$price[1]->buy_trans_charges,$price[1]->buy_gst_percent);
             $stockdetail->buy_stt_total = $this->cal_buy_stt_total($buy_gross_total,$price[1]->del_buy_stt_percent,$price[1]->intra_buy_stt_percent,$sell_stock_quantity,$sell_stock_price);
             $stockdetail->buy_sd_total = $this->cal_buy_sd_total($buy_gross_total,$price[1]->del_buy_sd_percent,$price[1]->intra_buy_sd_percent,$sell_stock_quantity,$sell_stock_price);
             $stockdetail->buy_net_total =($buy_gross_total)+($this->cal_buy_tc_total($buy_stock_price,$buy_stock_quantity,$price[1]->buy_trans_charges))+($this->cal_buy_b_total($buy_stock_price,$price[1]->buy_b_percent))+($this->cal_buy_gst_total($buy_stock_price,$price[1]->buy_b_percent,$price[1]->buy_trans_charges,$price[1]->buy_gst_percent))+($this->cal_buy_stt_total($buy_gross_total,$price[1]->del_buy_stt_percent,$price[1]->intra_buy_stt_percent,$sell_stock_quantity,$sell_stock_price))+($this->cal_buy_sd_total($buy_gross_total,$price[1]->del_buy_sd_percent,$price[1]->intra_buy_sd_percent,$sell_stock_quantity,$sell_stock_price));
         
-            // //dd($stockdetail);
-                // $stockdetail->save();
-            // //----------------------------------------Calculations related to sell--------------------------------------------------------------------------------------       $sell_stock_price = $request['sell_stock_price'];
+            //----------------------------------------Calculations related to sell--------------------------------------------------------------------------------------       $sell_stock_price = $request['sell_stock_price'];
             $sell_gross_total = $this->cal_buy_gross_total($sell_stock_price, $sell_stock_quantity);
             
             $stockdetail->sell_gross_total = $this->cal_buy_gross_total($sell_stock_price,$sell_stock_quantity);
@@ -432,10 +514,7 @@ class Stock_detailController extends Controller
             $stockdetail->sell_stt_total = $this->cal_buy_stt_total($sell_gross_total,$price[1]->del_sell_stt_percent,$price[1]->intra_sell_stt_percent,$sell_stock_quantity,$sell_stock_price);
             $stockdetail->sell_sd_total = $this->cal_buy_sd_total($sell_gross_total,$price[1]->del_sell_sd_percent,$price[1]->intra_sell_sd_percent,$sell_stock_quantity,$sell_stock_price);
             $stockdetail->sell_net_total = $sell_gross_total+($this->cal_buy_tc_total($sell_stock_price,$sell_stock_quantity,$price[1]->sell_trans_charges))+($this->cal_buy_b_total($sell_stock_price,$price[1]->sell_b_percent))+($this->cal_buy_gst_total($sell_stock_price,$price[1]->sell_b_percent,$price[1]->sell_trans_charges,$price[1]->sell_gst_percent))+($this->cal_buy_stt_total($sell_gross_total,$price[1]->del_sell_stt_percent,$price[1]->intra_sell_stt_percent,$sell_stock_quantity,$sell_stock_price))+($this->cal_buy_sd_total($sell_gross_total,$price[1]->del_sell_sd_percent,$price[1]->intra_sell_sd_percent,$sell_stock_quantity,$sell_stock_price));
-            //dd($stockdetail);
             $stockdetail->save();
-            
-            
             
         }        
             return redirect('dashboard/');
@@ -449,7 +528,6 @@ class Stock_detailController extends Controller
      */
     public function destroy($id)
     {
-        //dd('hi');
         $delete = Stock_detail::find($id);
         $delete->delete();
         return back();

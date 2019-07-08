@@ -17,7 +17,7 @@ class StockDetails extends Migration
             $table->increments('id');
             $table->integer('user_id');
             $table->boolean('fulfilled');
-            $table->boolean('nse_or_bse');
+            $table->boolean('nse_or_bse')->default(0);
             $table->string('stock_name');
             $table->double('buy_price',21,10);
             $table->integer('buy_quantity');

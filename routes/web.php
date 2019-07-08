@@ -15,17 +15,15 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('layouts/try', function () {
-    return view('layouts.try');
-});
 
 //Auth::routes();
 Auth::routes(['verify' => false]);
-Route::get('/home','HomeController@index')->name('home');
+Route::get('/user/home','HomeController@index')->name("home");
+Route::get('/activities','HomeController@activities');
 Route::get('/addstocks',function(){
     return view('user.dashboard');
 });
-Route::post('/sell/{}','Stock_detailController@sell');
+Route::match(['put', 'patch'],'sell/{id}', 'Stock_detailController@sell');
 //Fetch the records for the user
 Route::resource('dashboard','Stock_detailController',['names' => [
     'store' => 'dashboard',
@@ -44,10 +42,10 @@ Route::get('history','Stock_detailController@history');
 //     return "Hello This is admin panel";
 // }]);
 Route::middleware(['admin'])->group(function(){
-    Route::get('/home','AdminController@index')->name('home');
+    Route::get('/home','AdminController@index');
     Route::resource('admin/actions','AdminController');
     Route::get('/admin/allstocks','AdminController@allStocks'); 
-       
+    Route::get('/admin/activities','AdminController@allactivities');   
     
    
 });

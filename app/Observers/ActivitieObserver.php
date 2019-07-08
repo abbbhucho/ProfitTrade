@@ -24,7 +24,6 @@ class ActivitieObserver
             }
     
             $activity = new Activitie;
-            $activity->id = $model->id;
             $activity->user_id = Auth::user()->id;
             $activity->description =  Auth::user()->name.",".$action.",".$model->stock_name.",".$model->buy_quantity.",@".$model->buy_price; 
             $activity->save();
@@ -51,7 +50,6 @@ class ActivitieObserver
     public function deleted($model)
     {
             $activity = new Activitie;
-            $activity->id = $model->id;
             $activity->user_id = Auth::user()->id;
             $activity->description = Auth::user()->name.",deleted,".$model->stock_name.",".$model->buy_quantity.",@".$model->buy_price; 
             $activity->save();

@@ -1,11 +1,11 @@
 @extends('layouts.try')
 
 @section('content')
-<div class="container">
-	<div class="row">
+    <div class="container-fluid">
+	<div class="row justify-content-center">
 		
         
-        <div class="col-md-12">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-10">
         <h4>Stock ViewPort</h4>
         <div class="table-responsive">
 
@@ -109,15 +109,15 @@
              {{ method_field('PUT') }}
             <div class="form-group row add justify-content-center">
 
-            <input class="form-control" type="text" id="name" name="stock_name" placeholder="Stock Name"  style="width: 80%;">
+            <input class="form-control" type="text" id="name" name="stock_name" placeholder="Stock Name (Old Name : {{$view->stock_name}})"  style="width: 80%;" >
             {{-- <!-- <p class="error text-center alert alert-danger hidden"></p>  -->--}}
         </div>
         <div class="form-group row justify-content-center">
-            <input class="form-control" type="number" id="quantity" name="buy_stock_quantity" placeholder="Stock Quantity" pattern="^[0-9]+$" style="width: 80%;">
+            <input class="form-control" type="number" id="quantity" name="buy_stock_quantity" placeholder="Stock Quantity (Old Quantity : {{$view->buy_quantity}})" pattern="^[0-9]+$" style="width: 80%;">
             {{--<!-- <p class="error text-center alert alert-danger hidden"></p> -->--}}
         </div>
         <div class="form-group row justify-content-center">
-            <input class="form-control" type="number" id="price" name="buy_stock_price" placeholder="Purchase Stock Price"  style="width: 80%;">   
+            <input class="form-control" type="number" id="price" name="buy_stock_price" placeholder="Purchase Stock Price (Old Price : {{$view->buy_price}})"  style="width: 80%;">   
             {{--<!-- <p class="error text-center alert alert-danger hidden"></p> -->--}}
         </div>
         <div class="form-group row justify-content-center">
@@ -170,22 +170,9 @@
             </div>
             
             <div class="form-group">
-                <p class="form-control"  readonly>Bought time:  <?php $cur_time = strtotime("$current_time");
-                                                                    $created_time = strtotime("$view->created_at");
-                                                                    $minutes = round((abs($cur_time - $created_time / 60)),2);
+                <p class="form-control"  readonly>Bought time:{{ $view->created_at->diffForHumans() }}
                                                                     
-                                                                     if($minutes<60){
-                                                                         echo round($minutes,0)." minutes ago";
-                                                                     }elseif($minutes < 24*60){
-                                                                         echo round(($minutes/60),2)." hours ago";    
-                                                                     }
-                                                                     elseif($minutes < 24*60*365){
-                                                                         echo round($minutes/(1440),0)." days ago";    
-                                                                    }
-                                                                    else{
-                                                                        echo round($minutes/(525600),0)." years ago"; 
-                                                                    }
-                                                                   ?>
+                                                                     
                 
                 </p>
             </div>
@@ -236,11 +223,9 @@
                 
                   
                 </div>
-            </div>
-         
-        </div>
+        
         </form>
-    </div>
+    
     @endforeach
             @else
                 <div class="alert alert-warning">
@@ -251,5 +236,7 @@
         </tbody>
         
         </table>   
-
+    </div>
+</div>       
+</div>
 @endsection

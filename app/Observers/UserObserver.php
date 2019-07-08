@@ -17,7 +17,7 @@ class UserObserver
     {
         if ($user->wasRecentlyCreated == true) {
             // Data was just created
-            $action = 'new account created';
+            $action = 'new_account_made';
             if (Auth::check()) {
                 
                 /**----------To check if admin or the user has created account--------- */
@@ -27,9 +27,8 @@ class UserObserver
                 else{
                     $id = $user->id;
                 }
-                /*--------------------------------------------------------------------- */
-                $activity = new Activitie;
                 
+                $activity = new Activitie;
                 $activity->user_id = Auth::user()->id;
                 $activity->description =  $id.",".$action.",".$_SERVER['REMOTE_ADDR']; 
                 $activity->save();

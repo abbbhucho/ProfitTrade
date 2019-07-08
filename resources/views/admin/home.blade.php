@@ -65,6 +65,7 @@
                         <canvas id="myChart" width="635px" height="570px"> </canvas>
                     </div>
                 </div>
+                {{-- For activity --}}
                 <div class = "col-xs-12 col-sm-10 col-md-5 col-lg-5"> 
                         <div class="card mb-3 mx-4 mt-5" style="background-color:#c7ecee;">
                         <div class="card-header" style="background-color:#686de0;"><h4>All users's Activity</h4></div>
@@ -75,20 +76,42 @@
                                             <thead>
                                               <tr class="row bg-info">
                                                 <th class="col-1">#</th>
-                                                <th class="col">Description</th>
-                                                <th class="col-3">By</th>
-                                                <th class="col-4">Date</th>
+                                                <th class="col-6">Description</th>
+                                                <th class="col-2">By</th>
+                                                <th class="col-2">Date</th>
                                                 
                                               </tr>
                                             </thead>
                                             <tbody>
-                                             <?php $c = 0;?>
+                                             <?php $c = 1;?>
                                                   @foreach ($show_acts as $show_act)
                                                   <tr class="row">    
                                                   <th scope="row" class="col-1"><?php echo $c++; ?></th>
-                                                  <td class="col">{{$show_act->description}}</td>
-                                                  <td class="col-3"><a href="{{ url('user/'.Auth::user()->id) }}">{{ Auth::user()->name }}</a></td>
-                                                  <td class="col-4">{{ $show_act->created_at->diffForHumans() }}</td>
+                                                  <td class="col-6"><?php   $description = $show_act->description;
+                                                    if (strpos($description, 'created') !== false) {
+                                                        $words = explode(",", $description);
+                                                        echo $words[0]." ".$words[1]." a stock with name ".$words[2]."of quantity ".$words[3].$words[4]; 
+                                                    }
+                                                    elseif (strpos($description, 'updated') !== false) {
+                                                        $words = explode(",", $description);
+                                                        echo $words[0]." ".$words[1]." a stock with name ".$words[2]."of quantity ".$words[3].$words[4];                                                             
+                                                    }
+                                                    elseif (strpos($description, 'loggedin') !== false) {
+                                                        $words = explode(",", $description);
+                                                        echo Auth::user()->name." ".$words[0]." from ip".$words[1];
+                                                    }
+                                                    elseif (strpos($description, 'deleted') !== false) {
+                                                        $words = explode(",", $description);
+                                                        echo $words[0]." ".$words[1]." a stock with name ".$words[2]."of quantity ".$words[3].$words[4];                                                             
+                                                    }
+                                                    elseif (strpos($description, 'new_account_made') !== false) {
+                                                        $words = explode(",", $description);    
+                                                        echo "new account created ";
+                                                    }
+                                                    else{}
+                                                    ?></td>
+                                                  <td class="col-2"><a href="{{ url('user/'.$show_act->user_id) }}">{{ $show_act->user_id }}</a></td>
+                                                  <td class="col-2">{{ $show_act->created_at->diffForHumans() }}</td>
                                                   
                                                 </tr>
                                                   @endforeach
@@ -96,7 +119,7 @@
                                              
                                             </tbody>
                                           </table>
-                                          <a href="">more...</a>
+                                          <a href="{{ url('/admin/activities') }}">more...</a>
                                   </p>
                                 </div>
                               </div>
@@ -111,7 +134,7 @@
                 data: {
                     labels: ['January', 'February', 'March', 'April', 'Purple', 'Orange'],
                     datasets: [{
-                        label: '# of Votes',
+                        label: '# of Profits',
                         data: [12, 19, 3, 5, 2, 3],
                         backgroundColor: '#7ed6df',
                         borderColor: '#4834d4',

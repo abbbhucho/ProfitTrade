@@ -26,11 +26,12 @@ class AdminController extends Controller
        $stock_buy_total = Stock_Detail::all()->sum('buy_price');
        $stock_sell_total = Stock_Detail::all()->sum('sell_price');
        $total_traded_value = $stock_buy_total + $stock_sell_total;
+       $total_traded_value = round($total_traded_value,2);
        
        /**---------------------Total Profit for admin(here in this case a broker)----------------------- */
        
        $profit_total = Stock_Detail::all()->sum('profit');
-       $total_traded_value = round($total_traded_value,2);
+       $profit_total = round($profit_total,2);
        /*--------------------------------------------------------------------------------------------*/
        /*------------------------To calculate total expense ---------------------------------------- */
        $buy_stt_total = Stock_Detail::all()->sum('buy_stt_total');
@@ -50,18 +51,10 @@ class AdminController extends Controller
        $total_expense = $expense->reduce(function($total_expense, $expense){
                    return $total_expense+$expense;
        });    
-       //dd($total_expense);
        $total_expense = round($total_expense,2);
        /*------------------------------------------------------------------------------------------- */ 
        
-       
-       // $total_buy_price = $stock_total->buy_price;
-      
-       // for($i = 0; $i < $total_transaction; $i++){
-       //     $total_buy_price[i] +=  
-       // }
-       $show_acts = Activitie::get()->where('user_id',Auth::id())->take(-5);//fetch the last 5 records
-       //dd($show_acts);
+       $show_acts = Activitie::get()->take(-5);//fetch the last 5 records
        return view('admin.home',compact('show_acts','users_total','total_traded_value','profit_total','total_expense'));
        
     }
@@ -107,7 +100,7 @@ class AdminController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Display all the stocks.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -115,6 +108,10 @@ class AdminController extends Controller
     public function allStocks(){
         $stocks = Stock_detail::all()->where('fulfilled',1);
         return view('admin.viewallstocks',compact('stocks'));
+    }
+    public function allactivities(){
+        $logs = Activitie::all();
+        return view('admin.allActivity',compact('logs'));
     }
 
     /**

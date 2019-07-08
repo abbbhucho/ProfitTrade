@@ -77,11 +77,14 @@
     <!-- Sidebar -->
     <ul class="sidebar navbar-nav">
       <li class="nav-item">
+          @if (Auth::user()->isAdmin() == 1)
         <a class="nav-link" href="{{ url('/home') }}">
           <i class="fas fa-fw fa-tachometer-alt"></i>
-          @if (Auth::user()->isAdmin() == 1)
+         
             <span>Admin Dashboard</span>
           @else 
+          <a class="nav-link" href="{{ url('/user/home') }}">
+            <i class="fas fa-fw fa-tachometer-alt"></i>    
             <span>{{ Auth::user()->name}} Dashboard</span>
           @endif 
         </a>

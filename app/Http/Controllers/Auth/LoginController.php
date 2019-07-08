@@ -40,9 +40,11 @@ class LoginController extends Controller
 
     protected function authenticated(Request $request, $user)
     {
+     
       $activity = new Activitie;
-      $activity->user_id = \Auth::user()->id;
-      $activity->description = "loggedin".$request->ip();
+      $activity->user_id = Auth::user()->id;
+      $activity->description = "loggedin".",".$request->ip();
       $activity->save();
+    
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 use Auth;
+use Illuminate\Support\Facades\Route;
 use Closure;
 
 class IsAdmin
@@ -17,8 +18,9 @@ class IsAdmin
     {
         if(Auth::check() && Auth::user()->isAdmin() == 1){
             return $next($request);
+           
         }
-            return redirect('/');
-            
+            return redirect('/user/home');
+           
     }
 }

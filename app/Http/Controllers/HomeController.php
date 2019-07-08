@@ -40,11 +40,12 @@ class HomeController extends Controller
         $stock_buy_total = Stock_Detail::all()->where('user_id',Auth::id())->sum('buy_price');
         $stock_sell_total = Stock_Detail::all()->where('user_id',Auth::id())->sum('sell_price');
         $total_traded_value = $stock_buy_total + $stock_sell_total;
+        $total_traded_value = round($total_traded_value,2);
         
         /**---------------------Total Profit----------------------- */
         
         $profit_total = Stock_Detail::all()->where('user_id',Auth::id())->sum('profit');
-        $total_traded_value = round($total_traded_value,2);
+        $profit_total = round($profit_total,2);
         /*--------------------------------------------------------------------------------------------*/
         /*------------------------To calculate total expense ---------------------------------------- */
         $buy_stt_total = Stock_Detail::all()->where('user_id',Auth::id())->sum('buy_stt_total');
@@ -69,19 +70,11 @@ class HomeController extends Controller
         /*------------------------------------------------------------------------------------------- */ 
         
         
-        // $total_buy_price = $stock_total->buy_price;
-       
-        // for($i = 0; $i < $total_transaction; $i++){
-        //     $total_buy_price[i] +=  
-        // }
+        
         $show_acts = Activitie::get()->where('user_id',Auth::id())->take(-5);//fetch the last 5 records
-        //dd($show_acts);
+        
         return view('user.home',compact('show_acts','total_transaction','total_traded_value','profit_total','total_expense'));
-        // // $users = User::all()->where('id',$id);
-        // // return view('user.dashboard',compact('users'));
-        // return view('user.dashboard');
-        // // $users = DB::select('select * from users');
-        // // return view('user.dashboard',with(['users'=>$id]);
+        
     }
     public function show($id)
     {
@@ -89,10 +82,8 @@ class HomeController extends Controller
         $unique_users = User::all()->where('id',$id);
         return view('user.profile',compact('unique_users'));
     }
-    // public function show($id){
-         
-    //     $users = User::all()->where('id',$id);
-    //     return view('user.dashboard',compact('users'));
-    // }
-   
+    public function activities(){
+        $logs = Activitie::all()->where('user_id',Auth::id());
+        return view('user.activity',compact('logs'));
+    }
 }
