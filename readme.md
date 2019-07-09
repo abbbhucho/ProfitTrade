@@ -1,6 +1,14 @@
 
 
+
+
+<p align="center">
 ## About ProfitTrade
+
+<span style="color:red; padding: 3px;">"Bug"></span>
+
+</p>
+
 	The Project named ProfitTrade allows a user to keep a record of all the
 	stocks which are sold or to be sold at a particular date. It also provides
 	amount of extra charges applied as per the admin (here in this case is
