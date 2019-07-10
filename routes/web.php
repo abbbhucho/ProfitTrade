@@ -46,7 +46,7 @@ Route::middleware(['admin'])->group(function(){
     Route::resource('admin/actions','AdminController');
     Route::get('/admin/allstocks','AdminController@allStocks'); 
     Route::get('/admin/activities','AdminController@allactivities');   
-    
+    Route::resource('admin/charges','ChargeController');
    
 });
 /*------------------------------------------------------------------------------------*/ 

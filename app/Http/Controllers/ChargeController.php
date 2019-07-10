@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Auth;
 use Illuminate\Http\Request;
 use App\Charge;
 class ChargeController extends Controller
@@ -13,7 +13,7 @@ class ChargeController extends Controller
      */
     public function index()
     {
-        //
+        return view('admin.inputcharges');
     }
 
     /**
@@ -35,10 +35,31 @@ class ChargeController extends Controller
     public function store(Request $request)
     {
         $usr = Auth::user();
-
-        $charges = new Charge;
-        $charges->id = $usr->id;
-        $charges->buy_sd_percent = $Request[''];
+        
+            $charges = new Charge;
+            $charges->id = $request['nse_or_bse'];
+            $charges->intra_buy_sd_percent = $request['intra_buy_sd_percent'];
+            $charges->del_buy_sd_percent = $request['del_buy_sd_percent'];
+            $charges->intra_buy_stt_percent = $request['intra_buy_stt_percent'];
+            $charges->del_buy_stt_percent = $request['del_buy_stt_percent'];
+            $charges->intra_buy_b_percent = $request['intra_buy_b_percent'];
+            $charges->del_buy_b_percent = $request['del_buy_b_percent'];
+            $charges->buy_gst_percent = $request['buy_gst_percent'];
+            $charges->intra_buy_trans_charges = $request['intra_buy_trans_charges'];
+            $charges->del_buy_trans_charges = $request['del_buy_trans_charges'];
+            $charges->intra_sell_sd_percent = $request['intra_sell_sd_percent'];
+            $charges->del_sell_sd_percent = $request['del_sell_sd_percent'];
+            $charges->intra_sell_stt_percent = $request['intra_sell_stt_percent'];
+            $charges->del_sell_stt_percent = $request['del_sell_stt_percent'];
+            $charges->intra_sell_b_percent = $request['intra_sell_b_percent'];
+            $charges->del_sell_b_percent = $request['del_sell_b_percent'];
+            $charges->sell_gst_percent = $request['sell_gst_percent'];
+            $charges->intra_sell_trans_charges = $request['intra_sell_trans_charges'];
+            $charges->del_sell_trans_charges = $request['del_sell_trans_charges'];
+            $charges->save();
+           
+            return back()->with('status', 'Charges updated!');
+        
     }
 
     /**
@@ -49,8 +70,7 @@ class ChargeController extends Controller
      */
     public function show($id)
     {
-        $price = Charge::all()->where('id',Auth::user()->id);
-        return view('admin.charge',compact($price,$id));
+        
     }
 
     /**

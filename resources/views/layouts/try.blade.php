@@ -109,6 +109,11 @@
                 <span>View AllStocks</span></a>
             </li>
             <li class="nav-item">
+              <a class="nav-link" href="{{url('admin/charges') }}">
+                <i class="fas fa-file-invoice-dollar"></i>
+                <span>Enter Charge </span></a>
+            </li>
+            <li class="nav-item">
               <a class="nav-link" href="#">
                   <i class="fas fa-chart-line"></i>
                 <span>Reports</span></a>
