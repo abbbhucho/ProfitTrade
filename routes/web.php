@@ -17,7 +17,7 @@ Route::get('/', function () {
 
 
 //Auth::routes();
-Auth::routes(['verify' => false]);
+Auth::routes(['verify' => true]);
 Route::get('/user/home','HomeController@index')->name("home");
 Route::get('/activities','HomeController@activities');
 Route::get('/addstocks',function(){

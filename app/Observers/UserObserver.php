@@ -27,12 +27,12 @@ class UserObserver
                 else{
                     $id = $user->id;
                 }
-                
+              }  
                 $activity = new Activitie;
-                $activity->user_id = Auth::user()->id;
-                $activity->description =  $id.",".$action.",".$_SERVER['REMOTE_ADDR']; 
+                $activity->user_id = $user->id;
+                $activity->description = $user->id.",".$action.",".$_SERVER['REMOTE_ADDR']; 
                 $activity->save();
-            }
+            
         }
     }
    
