@@ -12,7 +12,8 @@ class ChargeController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {
+    {   
+        //$this->exchange();
         return view('admin.inputcharges');
     }
 
@@ -37,7 +38,7 @@ class ChargeController extends Controller
         $usr = Auth::user();
         
             $charges = new Charge;
-            $charges->id = $request['nse_or_bse'];
+            $charges->id = $request['nse_or_bse']+1;
             $charges->intra_buy_sd_percent = $request['intra_buy_sd_percent'];
             $charges->del_buy_sd_percent = $request['del_buy_sd_percent'];
             $charges->intra_buy_stt_percent = $request['intra_buy_stt_percent'];
@@ -68,9 +69,10 @@ class ChargeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function exchange(Request $request)
     {
-        
+        $id = $request['nse_or_bse']+1;
+        return $id;
     }
 
     /**

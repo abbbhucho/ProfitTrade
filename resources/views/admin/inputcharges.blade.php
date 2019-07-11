@@ -9,49 +9,58 @@
 				{{ session('status') }}
 			</div>
 		@endif
-			<form id='form1' action="{{ url('admin/charges') }}" method= "POST">
+		<form id="form2">
 				{{ csrf_field() }}
 				<!-- select NSE OR BSE -->
-				<div class="input-group mb-3">
-				  <select class="custom-select" id="inputGroupSelect02">
+				<div class="col">
+					<span><strong>Enter the Stock Exchange</strong></span>
+				</div>
+				<div class="input-group mb-3 mx-auto" >
+				  <select class="custom-select" id="stock_exchange" onchange="this.form.submit()">
 					<option selected>Choose...</option>
-					<option value="0" name="">NSE</option>
+					<option value="0" name="nse_or_bse">NSE</option>
 					<option value="1" name="nse_or_bse">BSE</option>
 					
 				  </select>
 					  <div class="input-group-append">
-							<label class="input-group-text" for="inputGroupSelect02">Stock Exchange</label>
+							<label class="input-group-text" for="inputGroupSelect02"> <button type="submit" class="btn btn-outline-dark">Stock Exchange</button>
+								</label>
 					  </div>
 				</div>
+		</form>
+		<p id="results">dewsdfre</p>
 				{{-- ------------------------------------------------------------------------------------ --}}
+			<form id='form1' action="{{ url('admin/charges') }}" method= "POST">
+					{{ csrf_field() }}
 				<hr class="hr-warning" />
 				<h2><center>Buy</center></h2>
 				<div class="row">
-					<h4>SD Charges</h4>
-					<div class="col">
+					<div class="col-3">	<h4>SD Charges</h4></div>
+					<div class="col-4">
 						<label for="intra_buy_sd_percent" class="sr-only">Intra Day Buy SD Charges</label>
 					  <input type="text" class="form-control validate" id="intra_buy_sd_percent" name="intra_buy_sd_percent" placeholder="Intra Day">
 					</div>
-					<div class="col">
+					<div class="col-4">
 						<label for="del_buy_sd_percent" class="sr-only">Delivery Day SD Charges</label>
 					  <input type="text" class="form-control validate" id="del_buy_sd_percent" name="del_buy_sd_percent" placeholder="Delivery Day">
 					</div>
 				</div>
 				<hr class="hr-warning" />
 				<div class="row">
-					<h4>STT Charges</h4>
-					<div class="col">
+					<div class="col-3">	<h4>STT Charges</h4></div>
+					<div class="col-4">
 						<label for="intra_buy_stt_percent" class="sr-only">Intra Day Buy STT Charges</label>
 					  <input type="text" class="form-control validate" id="intra_buy_stt_percent" name="intra_buy_stt_percent" placeholder="Intra Day">
 					</div>
-					<div class="col">
+					<div class="col-4">
 						<label for="del_buy_stt_percent" class="sr-only">Delivery Day STT Charges</label>
 					  <input type="text" class="form-control validate" id="del_buy_stt_percent" name="del_buy_stt_percent" placeholder="Delivery Day">
 					</div>
 				</div>
 				<hr class="hr-warning" />
-				<div class="row">
-					<h4>Brokerage Charges</h4>
+					<div class="row">
+						<div class="col-3"><h4>Brokerage Charges</h4>
+					</div>
 					<div class="col">
 						<label for="intra_buy_b_percent" class="sr-only">Intra Day Buy SD Charges</label>
 					  <input type="text" class="form-control validate" id="intra_buy_b_percent" name="intra_buy_b_percent" placeholder="Intra Day">
@@ -141,14 +150,35 @@
 					  <input type="text" class="form-control validate" id="del_sell_trans_charges" name="del_sell_trans_charges" placeholder="Delivery Day">
 					</div>
 				</div>
-			
-				<button type="submit" class="btn btn-outline-dark"> Submit </button>
+				<div class="row justify-content-center">
+
+					<button type="submit" class="btn btn-outline-dark"> Submit </button>
+				</div>	
 			</form>	
 	</div>
 	
 			
 	</div>
 </div>
-
+<script>
+	function showValues() {
+		var str = $( "#form2" ).serialize();
+		$( "#results" ).text(str);
+		//alert(str);
+	}
+	
+	$("select").on("change", showValues );
+	showValues();
+	// $(document).ready(function(){
+    //         jQuery('#ajaxSubmit').click(function(e){
+    //            e.preventDefault();
+    //            $.ajaxSetup({
+    //               headers: {
+    //                   'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+    //               }
+    //           });
+    //         });
+    //       });
+</script>
 
 @endsection

@@ -47,6 +47,7 @@ Route::middleware(['admin'])->group(function(){
     Route::get('/admin/allstocks','AdminController@allStocks'); 
     Route::get('/admin/activities','AdminController@allactivities');   
     Route::resource('admin/charges','ChargeController');
+    Route::post('admin/charges/exchange','ChargeController@exchange');
    
 });
 /*------------------------------------------------------------------------------------*/ 

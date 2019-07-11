@@ -20,6 +20,7 @@
   <link href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.css"  rel="stylesheet">
   <!-- Custom Scripts -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"></script>
+  <script src="{{ asset('js/app.js') }}"></script>
 </head>
 
 <body id="page-top">
@@ -110,7 +111,7 @@
             </li>
             <li class="nav-item">
               <a class="nav-link" href="{{url('admin/charges') }}">
-                <i class="fas fa-file-invoice-dollar"></i>
+                <i class="fas fa-coins"></i>
                 <span>Enter Charge </span></a>
             </li>
             <li class="nav-item">
@@ -193,10 +194,7 @@
   <script src="{{ asset('vendor/jquery/jquery.min.js') }}"></script>
   <script src="{{ asset('vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 
-  <!-- Core plugin JavaScript-->
-  <!-- <script src="vendor/jquery-easing/jquery.easing.min.js"></script> -->
-
-  <!-- Custom scripts for all pages-->
+    <!-- Custom scripts for all pages-->
   <script src="{{ asset('js/sb-admin.min.js') }}"></script>
  
 </body>
