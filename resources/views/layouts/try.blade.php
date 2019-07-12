@@ -55,8 +55,8 @@
         
      
       <li class="nav-item dropdown ">
-        <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"  v-pre>
-          <i class="fas fa-user-circle fa-fw fa-2x"></i> {{ Auth::user()->name }} 
+        <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="position:relative; padding-left:50px;" v-pre>
+          <img src="{{url('images/'.Auth::user()->avatar) }}" style="width:32px; height:32px; top:10px; left:10px; position:absolute; border-radius:50%;"> {{ Auth::user()->name }} 
         </a>
         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
           <a class="dropdown-item" href="{{ url('user/'.Auth::user()->id) }}">Profile</a>

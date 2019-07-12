@@ -95,7 +95,7 @@ class AdminController extends Controller
         $user->password = Hash::make($request['password']);        
         $user->save();
 
-        return redirect()->back()->with('success', 'User created successfully.');
+        return back()->with('success', 'User created successfully.');
         
     }
 
@@ -144,7 +144,9 @@ class AdminController extends Controller
         $update_users->save();
         return redirect()->back()->with('success', 'User created successfully.');
     }
-
+    public function addusers(){
+        return view('admin.addusers');
+    }
     /**
      * Remove the specified resource from storage.
      *
