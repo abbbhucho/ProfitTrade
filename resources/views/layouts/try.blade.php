@@ -20,7 +20,7 @@
   <link href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.css"  rel="stylesheet">
   <!-- Custom Scripts -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"></script>
-  <script src="{{ asset('js/app.js') }}"></script>
+  {{-- <script src="{{ asset('js/app.js') }}"></script> --}}
 </head>
 
 <body id="page-top">
@@ -113,6 +113,11 @@
               <a class="nav-link" href="{{url('admin/charges') }}">
                 <i class="fas fa-coins"></i>
                 <span>Enter Charge </span></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{url('admin/charges/0') }}">
+                <i class="fas fa-search-dollar"></i>
+                <span>Old Charges </span></a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="#">

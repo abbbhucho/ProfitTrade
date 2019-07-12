@@ -20,6 +20,7 @@ Route::get('/', function () {
 Auth::routes(['verify' => true]);
 Route::get('/user/home','HomeController@index')->name("home");
 Route::get('/activities','HomeController@activities');
+
 Route::get('/addstocks',function(){
     return view('user.dashboard');
 });
@@ -47,7 +48,7 @@ Route::middleware(['admin'])->group(function(){
     Route::get('/admin/allstocks','AdminController@allStocks'); 
     Route::get('/admin/activities','AdminController@allactivities');   
     Route::resource('admin/charges','ChargeController');
-    Route::post('admin/charges/exchange','ChargeController@exchange');
+   // Route::post('admin/charges/exchange','ChargeController@exchange');
    
 });
 /*------------------------------------------------------------------------------------*/ 
@@ -62,12 +63,3 @@ Route::middleware(['admin'])->group(function(){
 // });
 
 /* -------------------------------------------------------------------------------------*/
-//Route::resource('stock','Stock_detailController');
-
-// Route::get('dashboard/{id}','HomeController@index');
-//Http::routes()
-//  Route::resource('welcome','AdminController')->middleware('admin_verify');
-//facades
-//Middleware
-
-//Route::post('/welcome','AdminController@create')->middleware('admin_verify');

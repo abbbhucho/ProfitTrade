@@ -7,6 +7,8 @@ use Auth;
 use App\Stock_detail;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Intervention\Image\Facades\Image;
+
 
 class HomeController extends Controller
 {
@@ -25,10 +27,7 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    // public function index()
-    // {
-    //     return view('home');
-    // }
+    
     public function index()
     {
         /**---------------------Total transaction----------------------- */
@@ -76,6 +75,12 @@ class HomeController extends Controller
         return view('user.home',compact('show_acts','total_transaction','total_traded_value','profit_total','total_expense'));
         
     }
+     /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
     public function show($id)
     {
         $present_time = strtotime(Carbon::now());
@@ -86,4 +91,31 @@ class HomeController extends Controller
         $logs = Activitie::all()->where('user_id',Auth::id());
         return view('user.activity',compact('logs'));
     }
+    
+     /**
+     * Update the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request,$id){
+        $user = Auth::user();
+        //dd($request->hasFile('avatar'));
+        //Handle the user upload of avatar
+        if($request->hasFile('avatar')){
+            $avatar = $request->file('avatar');
+            
+            $filename = time().'.'.$avatar->getClientOriginalExtension();
+            Image::make($avatar)->resize(300,300)->save( public_path('/images/'.$filename) );
+
+            
+            $user->avatar = $filename;
+           // $user->save();
+        }
+        $user->name = $request->name;
+        $user->phone = $request->phone;
+        $user->address = $request->address;
+        $user->save();
+        return back()->with('status', 'Profile updated!');
+    }    
 }

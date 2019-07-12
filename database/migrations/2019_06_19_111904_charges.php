@@ -14,7 +14,7 @@ class Charges extends Migration
     public function up()
     {
         Schema::create('charges', function (Blueprint $table) {
-            $table->increments('id');
+            $table->integer('id',4);
             $table->double('intra_buy_sd_percent',8,5);
             $table->double('del_buy_sd_percent',8,5);
             $table->double('intra_buy_stt_percent',8,5);

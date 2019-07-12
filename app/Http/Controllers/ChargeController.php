@@ -36,9 +36,9 @@ class ChargeController extends Controller
     public function store(Request $request)
     {
         $usr = Auth::user();
-        
-            $charges = new Charge;
-            $charges->id = $request['nse_or_bse']+1;
+            $id  = $request['nse_or_bse']+1;
+            $charges = Charge::find($id);
+            $charges->id = $id;
             $charges->intra_buy_sd_percent = $request['intra_buy_sd_percent'];
             $charges->del_buy_sd_percent = $request['del_buy_sd_percent'];
             $charges->intra_buy_stt_percent = $request['intra_buy_stt_percent'];
@@ -71,8 +71,17 @@ class ChargeController extends Controller
      */
     public function exchange(Request $request)
     {
-        $id = $request['nse_or_bse']+1;
-        return $id;
+        // $id = $request->id+1;
+        // $prices = Charge::find($id);
+         
+        // $returnHTML = view('admin.price')->render();
+        // return response()->json(array('success' => true,'html'=>$returnHTML));
+        
+    }
+    public function show($id){
+        $costs = Charge::get();
+        //dd($costs);
+        return view('admin.oldcharges',compact('costs'));
     }
 
     /**
