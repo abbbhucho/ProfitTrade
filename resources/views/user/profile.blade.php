@@ -7,7 +7,7 @@
 	<div class="row justify-content-center">
         <div class="col-xs-6  col-md-offset-1 col-md-4 col-sm-6 col-lg-4" >
                
-            <img src="{{url('images/'.Auth::user()->avatar) }}" class="img-circle" height= "150px">
+            <img src="{{url('images/'.Auth::user()->avatar) }}" class="img-circle" height= "150px" style="border-radius:50%;">
         
         </div>
         @foreach ($unique_users as $unique_user )

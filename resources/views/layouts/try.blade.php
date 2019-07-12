@@ -60,7 +60,7 @@
         </a>
         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
           <a class="dropdown-item" href="{{ url('user/'.Auth::user()->id) }}">Profile</a>
-          <a class="dropdown-item" href="">Activity Log</a>
+          <a class="dropdown-item" href="{{url('/activities')}}">Activity Log</a>
           <div class="dropdown-divider"></div>
           <a class="dropdown-item" href="{{ route('logout') }}"  onclick="event.preventDefault();
                                              document.getElementById('logout-form').submit();">{{ __('Logout') }}</a>
