@@ -21,7 +21,7 @@ class StockDetails extends Migration
             $table->string('stock_name');
             $table->double('buy_price',21,10);
             $table->integer('buy_quantity');
-            $table->double('buy_gross_total',21,10)->nullable();
+            $table->double('buy_gross_total',52,10)->nullable();
             
             $table->double('buy_stt_total',21,10)->nullable();
             
@@ -31,11 +31,11 @@ class StockDetails extends Migration
             
             $table->double('buy_gst_total',21,10)->nullable();
             $table->double('buy_tc_total',21,10)->nullable();
-            $table->double('buy_net_total',21,10)->nullable();
+            $table->double('buy_net_total',52,10)->nullable();
             
             $table->double('sell_price',21,10)->nullable();
             $table->integer('sell_quantity')->nullable();
-            $table->double('sell_gross_total',21,10)->nullable();
+            $table->double('sell_gross_total',52,10)->nullable();
            
             $table->double('sell_stt_total',21,10)->nullable();
            
@@ -45,7 +45,7 @@ class StockDetails extends Migration
             
             $table->double('sell_gst_total',21,10)->nullable();
             $table->double('sell_tc_total',21,10)->nullable();
-            $table->double('sell_net_total',21,10)->nullable();
+            $table->double('sell_net_total',52,10)->nullable();
             $table->double('profit',21,10)->nullable();
             $table->integer('duration')->nullable();
             $table->timestamps();
