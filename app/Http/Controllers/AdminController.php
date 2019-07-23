@@ -85,7 +85,7 @@ class AdminController extends Controller
             'password' => 'required|string|min:8|confirmed',
             'phone' => 'required|numeric|unique:users,phone',
             'address' => 'required|string|min:1',
-            
+                
         ]);
         $user = new User;        
         $user->name = $request['name'];        
@@ -142,7 +142,7 @@ class AdminController extends Controller
         $update_users->phone =  $request['phone'];
         $update_users->address =$request['address'];
         $update_users->save();
-        return redirect()->back()->with('success', 'User created successfully.');
+        return redirect()->back()->with('success', 'User updated successfully.');
     }
     public function addusers(){
         return view('admin.addusers');

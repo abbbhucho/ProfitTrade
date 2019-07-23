@@ -11,9 +11,7 @@ use App\Greeting;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', 'HomeController@index')->middleware('auth');
 
 
 //Auth::routes();
