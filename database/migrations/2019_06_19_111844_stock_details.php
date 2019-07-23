@@ -34,7 +34,7 @@ class StockDetails extends Migration
             $table->double('buy_net_total',21,10)->nullable();
             
             $table->double('sell_price',21,10)->nullable();
-            $table->integer('sell_quantity');
+            $table->integer('sell_quantity')->nullable();
             $table->double('sell_gross_total',21,10)->nullable();
            
             $table->double('sell_stt_total',21,10)->nullable();
