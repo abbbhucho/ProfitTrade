@@ -8,7 +8,7 @@
         <p>The Stock History shows all the details of the particular user:</p>                        
 </div>
 
-                        <table id="history" class="table table-bordered table-striped table-condensed table-hover">
+                        <table id="history" class="table  table-bordered table-striped table-condensed table-hover">
                             <thead>
                             <col>
                             
@@ -25,7 +25,7 @@
                                 <th scope="col">Stock Quantity</th>
                                 <th scope="col">Price</th>
                                 <th scope="col">Type</th>
-                                <th scope="col">Gross Total</th>
+                                <th scope="col" class="col-1">Gross Total</th>
                                 <th scope="col" class="col-3">Extra Charges Applied</th>
                                 <th scope="col">NetTotal</th>
                                 <th scope="col">Price</th>
@@ -34,7 +34,7 @@
                                 <th scope="col" class="col-3">Extra Charges Applied</th>
                                 <th scope="col">NET Charges</th>
                                 <th scope="col">Profit</th>
-                                <th scope="col">Sell Page</th>
+                                <th scope="col">Sell Date</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -55,7 +55,7 @@
                                             <td>{{ 'BSE' }}</td>
                                         
                                         @endif
-                                    <td>{{$stock->buy_gross_total}}</td>
+                                    <td class=col-1>{{$stock->buy_gross_total}}</td>
                                     <td  class="col-3"><p>STT Charges : {{ round($stock->buy_stt_total,2) }}</p>
                                     <p>SD Charges : {{ round($stock->buy_sd_total,2) }}</p>
                                     <p>Brokerage : {{ round($stock->buy_b_total,2) }}</p>
