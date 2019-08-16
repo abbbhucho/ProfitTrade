@@ -175,10 +175,10 @@
       <!-- /.container-fluid -->
 
       <!-- Sticky Footer -->
-      <footer class="sticky-footer" style="width:100%; background-color:#ecf0f1;">
+      <footer class="sticky-footer" style="width:100%;  background-color:#343a40;">
         <div class="container my-auto">
           <div class="footer-copyright text-center my-auto">
-            <span style="color:#212529">Copyright ©<a href="{{ url('/') }}"> {{ config('app.name', 'Profit Trade') }}</a> 2019</span>
+            <span style="color:white; font-size:16px;">Copyright ©<a href="{{ url('/') }}"> {{ config('app.name', 'Profit Trade') }}</a> 2019</span>
           </div>
         </div>
       </footer>
