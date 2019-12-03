@@ -1,4 +1,5 @@
 # Profit Trade
+[![Build Status](https://travis-ci.org/abbbhucho/ProfitTrade.svg?branch=feat%2F1.0)](https://travis-ci.org/abbbhucho/ProfitTrade)
 
 The Project named ProfitTrade allows a user to keep a record of all the
 	stocks which are sold or to be sold at a particular date. 
