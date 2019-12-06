@@ -5,8 +5,10 @@ use App\Stock_detail;
 use App\Activitie;
 use App\User;
 use Auth;
+use App\Charts\SampleChart;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+
 class AdminController extends Controller
 {
     /**
@@ -19,7 +21,7 @@ class AdminController extends Controller
         // find the id of Admin
 
        /**---------------------Total Users----------------------- */
-       $users_total = Stock_Detail::count();
+       $users_total = User::count();
        
        /**---------------------Total Traded Value----------------------- */
        
@@ -55,7 +57,25 @@ class AdminController extends Controller
        /*------------------------------------------------------------------------------------------- */ 
        
        $show_acts = Activitie::get()->take(-5);//fetch the last 5 records
-       return view('admin.home',compact('show_acts','users_total','total_traded_value','profit_total','total_expense'));
+
+        /**--------------------------For the purpose of Charts------------------------------------- */
+        $chart = new SampleChart;  
+        $chart->labels(['September', 'October', 'November', 'December']);
+        $sep = User::whereYear('created_at', '=', '2019')
+              ->whereMonth('created_at', '=', '09')
+              ->count();
+        $oct = User::whereYear('created_at', '=', '2019')
+              ->whereMonth('created_at', '=', '10')
+              ->count();
+        $nov = User::whereYear('created_at', '=', '2019')
+              ->whereMonth('created_at', '=', '11')
+              ->count();
+        $dec = User::whereYear('created_at', '=', '2019')
+              ->whereMonth('created_at', '=', '12')
+              ->count();
+        $chart->dataset('Number of Users', 'bar', [$sep, $oct, $nov, $dec]);
+        /** ---------------------------------------------------------------------------------------- */    
+       return view('admin.home',compact('show_acts','users_total','total_traded_value','profit_total','total_expense','chart'));
        
     }
 
@@ -143,6 +163,10 @@ class AdminController extends Controller
         $update_users->address =$request['address'];
         $update_users->save();
         return redirect()->back()->with('success', 'User updated successfully.');
+    }
+    public function reports()
+    {
+        return view('admin.reports');
     }
     public function addusers(){
         return view('admin.addusers');

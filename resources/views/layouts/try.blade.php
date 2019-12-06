@@ -12,7 +12,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
  
     <title>{{ config('app.name') }}</title>
-
+    <link rel="shortcut icon" href="{{ asset('images/favicon.png') }}">
   <!-- Custom fonts for this template-->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.min.css" rel="stylesheet">
   <link href="{{ asset('css/sb-admin.css') }}" rel="stylesheet">
@@ -120,7 +120,7 @@
                 <span>Old Charges </span></a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">
+              <a class="nav-link" href="{{url('admin/reports') }}">
                   <i class="fas fa-chart-line"></i>
                 <span>Reports</span></a>
             </li>
@@ -143,7 +143,7 @@
             <span>Stocks History</span></a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="tables.html">
+          <a class="nav-link" href="#">
               <i class="fas fa-chart-line"></i>
             <span>Reports</span></a>
         </li>
@@ -175,10 +175,10 @@
       <!-- /.container-fluid -->
 
       <!-- Sticky Footer -->
-      <footer class="sticky-footer" style="width:100%; background-color:#ecf0f1;">
+      <footer class="sticky-footer" style="width:100%;  background-color:#343a40;">
         <div class="container my-auto">
           <div class="footer-copyright text-center my-auto">
-            <span style="color:#212529">Copyright ©<a href="{{ url('/') }}"> {{ config('app.name', 'Profit Trade') }}</a> 2019</span>
+            <span style="color:white; font-size:16px;">Copyright ©<a href="{{ url('/') }}"> {{ config('app.name', 'Profit Trade') }}</a> 2019</span>
           </div>
         </div>
       </footer>

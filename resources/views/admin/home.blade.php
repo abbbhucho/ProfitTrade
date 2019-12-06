@@ -62,7 +62,8 @@
                 <div class = "col-xs-12 col-sm-10 col-md-7 col-lg-7 pt-4">
                     {{-- for graph --}}
                     <div class="container">
-                        <canvas id="myChart" width="635px" height="570px"> </canvas>
+                            {!! $chart->container() !!}
+                        {{-- <canvas id="myChart" width="635px" height="570px"> </canvas> --}}
                     </div>
                 </div>
                 {{-- For activity --}}
@@ -127,15 +128,17 @@
             </div>
         
     </div>
-    <script>
+    <script src=https://cdnjs.cloudflare.com/ajax/libs/echarts/4.0.2/echarts-en.min.js charset=utf-8></script>
+        {!! $chart->script() !!}
+    {{-- <script>
             var ctx = document.getElementById('myChart').getContext('2d');
             var myChart = new Chart(ctx, {
                 type: 'line',
                 data: {
-                    labels: ['January', 'February', 'March', 'April', 'Purple', 'Orange'],
+                    labels: ['September', 'October', 'November', 'December'],
                     datasets: [{
-                        label: '# of Profits',
-                        data: [12, 19, 3, 5, 2, 3],
+                        label: '# of Users',
+                        data: [0, 3, 0, 0],
                         backgroundColor: '#7ed6df',
                         borderColor: '#4834d4',
                         borderWidth: 1
@@ -151,6 +154,6 @@
                     }
                 }
             });
-    </script>
+    </script> --}}
 
 @endsection
