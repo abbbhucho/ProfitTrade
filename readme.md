@@ -31,6 +31,7 @@ due to insufficient knowledge of the extra charges.
 - 	Run it on a localhost server and enter URL : {yoururl}/profitTrade/public/
 -	Register and create a new account
 -	Create an admin account to enter the charges which are to be applied by the broker
+-   You can also use the command ``` php artisan migrate --seed ``` to enter dummy charges and admin column
 - 	Log in and allow this application to help maintain your stocks
 
 ### Prerequisites
