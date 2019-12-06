@@ -12,7 +12,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
  
     <title>{{ config('app.name') }}</title>
-
+    <link rel="shortcut icon" href="{{ asset('images/favicon.png') }}">
   <!-- Custom fonts for this template-->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.min.css" rel="stylesheet">
   <link href="{{ asset('css/sb-admin.css') }}" rel="stylesheet">
@@ -120,7 +120,7 @@
                 <span>Old Charges </span></a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">
+              <a class="nav-link" href="{{url('admin/reports') }}">
                   <i class="fas fa-chart-line"></i>
                 <span>Reports</span></a>
             </li>
@@ -143,7 +143,7 @@
             <span>Stocks History</span></a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="tables.html">
+          <a class="nav-link" href="#">
               <i class="fas fa-chart-line"></i>
             <span>Reports</span></a>
         </li>

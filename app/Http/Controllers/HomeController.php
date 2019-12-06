@@ -8,7 +8,7 @@ use App\Stock_detail;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Intervention\Image\Facades\Image;
-
+use App\Charts\SampleChart;
 
 class HomeController extends Controller
 {
@@ -67,12 +67,33 @@ class HomeController extends Controller
         //dd($total_expense);
         $total_expense = round($total_expense,2);
         /*------------------------------------------------------------------------------------------- */ 
-        
+        /**--------------------------------Charts --------------------------------------------------- */
+        $chart = new SampleChart;  
+        $chart->labels(['September', 'October', 'November', 'December']);
+        $sep = Stock_detail::whereYear('created_at', '=', '2019')
+              ->whereMonth('created_at', '=', '09')
+              ->where('user_id',Auth::id())
+              ->count();
+        $oct = Stock_detail::whereYear('created_at', '=', '2019')
+              ->whereMonth('created_at', '=', '10')
+              ->where('user_id',Auth::id())
+              ->count();
+        $nov = Stock_detail::whereYear('created_at', '=', '2019')
+              ->whereMonth('created_at', '=', '11')
+              ->where('user_id',Auth::id())
+              ->count();
+        $dec = Stock_detail::whereYear('created_at', '=', '2019')
+              ->whereMonth('created_at', '=', '12')
+              ->where('user_id',Auth::id())
+              ->count();
+        $chart->dataset('Number of Stocks in a month', 'line', [$sep, $oct, $nov, $dec]);
+
+        /* ------------------------------------------------------------------------------------------ */
         
         
         $show_acts = Activitie::get()->where('user_id',Auth::id())->take(-5);//fetch the last 5 records
         
-        return view('user.home',compact('show_acts','total_transaction','total_traded_value','profit_total','total_expense'));
+        return view('user.home',compact('show_acts','total_transaction','total_traded_value','profit_total','total_expense','chart'));
         
     }
      /**

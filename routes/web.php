@@ -41,24 +41,14 @@ Route::get('history','Stock_detailController@history');
 //     return "Hello This is admin panel";
 // }]);
 Route::middleware(['admin'])->group(function(){
+    Route::get('/', 'AdminController@index');
     Route::get('/home','AdminController@index');
     Route::resource('admin/actions','AdminController');
     Route::get('/admin/allstocks','AdminController@allStocks'); 
     Route::get('/admin/activities','AdminController@allactivities');   
     Route::resource('admin/charges','ChargeController');
     Route::get('admin/addusers','AdminController@addusers');
+    Route::get('admin/reports','AdminController@reports');
    // Route::post('admin/charges/exchange','ChargeController@exchange');
    
 });
-/*------------------------------------------------------------------------------------*/ 
-//uses two middleware (basically for the idea of using two middleware first to know users and then admins)
-// Route::middleware(['users', 'admins'])->group(function () {
-//     Route::get('/', function () {
-//         // Uses first & second Middleware
-//     });
-//     Route::get('user/profile', function () {
-//         // Uses first & second Middleware
-//     });
-// });
-
-/* -------------------------------------------------------------------------------------*/

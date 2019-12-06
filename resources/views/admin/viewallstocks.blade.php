@@ -27,23 +27,25 @@
                                 <th >Price</th>
                                 <th >Type</th>
                                 <th >Gross Total</th>
-                                <th >STT Applied</th>
+                                <th>Extra Charges Applied</th>
+                                {{-- <th >STT Applied</th>
                                 <th >SD Applied</th>
                                 <th >Brokerage Applied</th>
                                 <th >Transaction Charges</th>
-                                <th >GST Charges</th>
+                                <th >GST Charges</th> --}}
                                 <th >NetTotal</th>
                                 <th >Price</th>
                                 <th >Quantity</th>
                                 <th >Gross Total</th>
-                                <th >STT Applied</th>
+                                <th>Extra Charges Applied</th>
+                                {{-- <th >STT Applied</th>
                                 <th >SD Applied</th>
                                 <th >Brokerage Applied</th>
                                 <th >Transaction Charges</th>
-                                <th >GST Charges</th>
+                                <th >GST Charges</th> --}}
                                 <th >NET Charges</th>
+                                <th >Profit/Loss</th>
                                 <th >Sell Date</th>
-                                <th >Profit</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -64,24 +66,24 @@
                                             <td>{{ 'BSE' }}</td>
                                         
                                         @endif
-                                    <td >{{$stock->buy_gross_total}}</td>
-                                    <td >{{number_format($stock->buy_stt_total,8)}}</td>
-                                    <td >{{(float) $stock->buy_sd_total}}</td>
-                                    <td >{{(float) $stock->buy_b_total}}</td>
-                                    <td >{{(float) $stock->buy_tc_total}}</td>
-                                    <td >{{(float) $stock->buy_gst_total}}</td>
+                                    <td >{{$stock->buy_gross_total}}</td>                    
+                                    <td ><p>STT Charges : {{number_format($stock->buy_stt_total,8)}}</p>
+                                    <p>SD Charges : {{(float) $stock->buy_sd_total}}</p>
+                                    <p>Brokerage : {{(float) $stock->buy_b_total}}</p>
+                                    <p>Transaction Charges : {{(float) $stock->buy_tc_total}}</p>
+                                    <p>GST : {{(float) $stock->buy_gst_total}}</p></td>
                                     <td >{{$stock->buy_net_total}}</td>
                                     <td >{{$stock->sell_price}}</td>
                                     <td >{{$stock->sell_quantity}}</td>
                                     <td >{{$stock->sell_gross_total}}</td>
-                                    <td >{{(float) $stock->sell_stt_total}}</td>
-                                    <td >{{(float) $stock->sell_sd_total}}</td>
-                                    <td >{{(float) $stock->sell_b_total}}</td>
-                                    <td >{{(float) $stock->sell_tc_total}}</td>
-                                    <td >{{(float) $stock->sell_gst_total}}</td>
+                                    <td ><p>STT Charges : {{(float) $stock->sell_stt_total}}</p>
+                                    <p>SD Charges : {{(float) $stock->sell_sd_total}}</p>
+                                    <p>Brokerage : {{(float) $stock->sell_b_total}}</p>
+                                    <p>Transaction Charges : {{(float) $stock->sell_tc_total}}</p>
+                                    <p>GST : {{(float) $stock->sell_gst_total}}</p></td>
                                     <td >{{(float) $stock->sell_net_total}}</td>
                                     <td >{{$stock->profit}}</td>
-                                    <td >{{$stock->updated_at}}</td>
+                                    <td >{{$stock->updated_at->diffForHumans()}}</td>
                                     @endif
                             </tr> 
                             @endforeach
