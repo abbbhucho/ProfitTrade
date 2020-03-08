@@ -2,9 +2,10 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
+// use Illuminate\Database\Eloquent\Model;
+use Jenssegers\Mongodb\Eloquent\Model as Mongo;
 
-class Activitie extends Model
+class Activitie extends Mongo
 {
      /**
      * The attributes that are mass assignable.

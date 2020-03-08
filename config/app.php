@@ -163,6 +163,7 @@ return [
         Illuminate\View\ViewServiceProvider::class,
         Intervention\Image\ImageServiceProvider::class,
         ConsoleTVs\Charts\ChartsServiceProvider::class,
+        Jenssegers\Mongodb\MongodbServiceProvider::class,
         /*
          * Package Service Providers...
          */
@@ -227,6 +228,8 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
         'Image' => Intervention\Image\Facades\Image::class,
+        // 'Mongo' => Jenssegers\Mongodb\Eloquent\Model::class,
+        // 'MongoAuth' => Jenssegers\Mongodb\Auth\User::class,
     ],
 
 ];
